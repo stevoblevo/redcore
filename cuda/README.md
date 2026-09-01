@@ -8,15 +8,19 @@ Physics in these scripts is textbook magnetite / hematite, not a density table.
 
 `sphere()` / `Save(mz)` / `[]float64{…}` fail on stock mumax **3.12**. These decks now use:
 
-- `Superball(2*r, 1)` for a sphere of radius `r`
+- `Superball(2*r, 1)` for a sphere of radius `r` (p=1). Geometry unchanged.
 - `Save(m.Comp(2))` and `m.Comp(0).Average()` / `m.Comp(2).Average()`
 - WP2 stresses unrolled (no composite literals)
 
-Constants (Ms, A, Ku, λ / B1 / B2) are unchanged. `SetSolver(9)` is the Vanderveken ME fork — it fatals on stock 3.12. Use the default solver (RK45 / SetSolver(5)).
+Constants (Ms, A, Ku, λ / B1 / B2) are unchanged. `SetSolver(9)` is the Vanderveken ME fork — it fatals on stock 3.12. RK45 is `SetSolver(5)`. The live firing deck `57374e5e` is already solver 5. Do not rewrite it with 9.
 
-WP2 `B1`/`B2` are mumax3-me. **Vet first:** `mumax3 -vet -http= cuda/mumax/strain_sweep.mx3`. If `B1` is undefined, skip WP2. Do not invent B1.
+WP2 `B1`/`B2`/`exx` are Vanderveken ME. **Vet first:** `mumax3 -vet -http= cuda/mumax/strain_sweep.mx3`. If `B1` is undefined, skip WP2. Do not invent B1. Do **not** swap in `Ku1=(3/2)λσ` and call it the same energy: Ku is uniaxial along AnisU; B1/B2 is cubic magnetostriction on the full strain tensor. The dest CUDA prove used Ku, not B1.
 
 WP2 comment says compression along Z; `sig>0` and `ezz=sig/E` is tension. Flip `sig` for masonry compression. `E=230 GPa`, `nu=0.26` are Fe3O4 grain stiffness, not clay.
+
+## Honest limits of this WP1 Relax()
+
+`Relax()` exists on stock 3.12. Grain demag is ~μ₀ Ms/3 ≈ 0.20 T vs Earth 50 µT, so Relax **cannot lock TRM**. When `brickmark_pack.out` lands, interpret `demag_relaxing` vs anis-uniform candidate, never lab TRM.
 
 ## Dest seat (not a WP pass)
 
@@ -64,13 +68,14 @@ WP1 pass: spatial power in Bz falls with standoff at least as fast as continuati
 WP2 pass: ΔB at 5 MPa ≥ 3× the pack’s remount-equivalent noise (use 4 nT × scale factor as the floor until the lab measures remount).
 WP2 fail: service-load 0.5–3 MPa is invisible. Then the fabric is research, not a product. That is an allowed outcome.
 
-Dest WP1 in flight is **not** a pass until `postprocess.py` prints the continuation table.
+Dest WP1 in flight is **not** a pass until `postprocess.py` prints the continuation table. A finished Relax() is still not lab TRM.
 
 ## Will not prove
 
 - That a wall is memory.
 - That a dinner plate holds Bach.
 - Absolute bits per brick. Scaling a 4 µm pack to 220 cm² is an estimate, not a measurement. Afternoon Zero still owns that number.
+- That WP1 Relax() wrote TRM. Grain demag (~0.20 T) dominates Earth field (50 µT).
 
 ## Hardware
 
