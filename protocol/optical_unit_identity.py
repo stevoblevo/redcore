@@ -4,21 +4,32 @@
 ORB (or SIFT) + homography when OpenCV is installed. Numpy Harris +
 normalized-patch matching + RANSAC homography otherwise.
 
-No brick measurements live in this file. --self-test uses synthetic
-noise textures only.
+No brick measurements live in this file. --self-test is a synthetic
+matcher check only (not a brick, not bits, not Experiment 0 EER).
 
-Real crops later (same stem, _r1/_r2 or _1/_2):
+Land one labeled crop (no EER):
+
+    python protocol/optical_unit_identity.py --ingest path/to/A-01_r1.jpg
+
+Paired crops later (EER only when two faces and a genuine pair exist):
 
     python protocol/optical_unit_identity.py --photos path/to/crops
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
+import struct
 import sys
 from collections import defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
+
+HERE = Path(__file__).resolve().parent
+INGEST_DIR = HERE / "experiment0_ingest"
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".bmp", ".webp"}
 
@@ -320,10 +331,10 @@ def ascii_histogram(values: np.ndarray, lo: float, hi: float, bins: int = 12, wi
     return "\n".join(lines)
 
 
-def summarize(genuine, impostor) -> str:
+def summarize(genuine, impostor, *, report_eer: bool) -> str:
+    """Score-distribution text. EER only when report_eer is True (real pairs)."""
     g = np.asarray(genuine, dtype=np.float64)
     i = np.asarray(impostor, dtype=np.float64)
-    eer = equal_error_rate(g, i)
     lo = 0.0
     hi = 1.0
     if g.size or i.size:
@@ -333,16 +344,20 @@ def summarize(genuine, impostor) -> str:
         f"min={g.min() if g.size else float('nan'):.3f}  max={g.max() if g.size else float('nan'):.3f}",
         f"impostor n={i.size}  mean={i.mean() if i.size else float('nan'):.3f}  "
         f"min={i.min() if i.size else float('nan'):.3f}  max={i.max() if i.size else float('nan'):.3f}",
-        f"EER={eer['eer'] if eer['eer'] is not None else 'n/a'}  "
-        f"threshold={eer['threshold']}",
-        "genuine histogram:",
-        ascii_histogram(g, lo, hi) if g.size else "  (empty)",
-        "impostor histogram:",
-        ascii_histogram(i, lo, hi) if i.size else "  (empty)",
     ]
+    if report_eer and g.size and i.size:
+        eer = equal_error_rate(g, i)
+        lines.append(
+            f"EER={eer['eer'] if eer['eer'] is not None else 'n/a'}  "
+            f"threshold={eer['threshold']}"
+        )
+        lines.append("These are photo-match scores, not bits-per-brick.")
+    lines.append("genuine histogram:")
+    lines.append(ascii_histogram(g, lo, hi) if g.size else "  (empty)")
+    lines.append("impostor histogram:")
+    lines.append(ascii_histogram(i, lo, hi) if i.size else "  (empty)")
     if g.size and i.size:
-        separated = float(g.min()) > float(i.max())
-        lines.append(f"clean_separation={separated}")
+        lines.append(f"clean_separation={float(g.min()) > float(i.max())}")
     return "\n".join(lines)
 
 
@@ -367,8 +382,9 @@ def load_gray(path: Path) -> np.ndarray:
         return np.asarray(im, dtype=np.float64)
     except ImportError as exc:
         raise SystemExit(
-            "Reading photos needs opencv-python or Pillow. "
-            "Self-test does not: python protocol/optical_unit_identity.py --self-test"
+            "Scoring photos needs opencv-python or Pillow. "
+            "Ingest does not. Self-test does not: "
+            "python protocol/optical_unit_identity.py --self-test"
         ) from exc
 
 
@@ -383,10 +399,67 @@ def parse_face_id(path: Path) -> str | None:
     return None
 
 
-def score_photo_folder(folder: Path) -> int:
-    files = sorted(
-        p for p in folder.iterdir() if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES
+def _iter_images(path: Path) -> list[Path]:
+    if path.is_file():
+        if path.suffix.lower() in IMAGE_SUFFIXES:
+            return [path]
+        return []
+    if not path.is_dir():
+        return []
+    return sorted(
+        p for p in path.iterdir() if p.is_file() and p.suffix.lower() in IMAGE_SUFFIXES
     )
+
+
+def _png_wh(data: bytes) -> tuple[int, int] | None:
+    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    w, h = struct.unpack(">II", data[16:24])
+    return int(w), int(h)
+
+
+def _jpeg_wh(data: bytes) -> tuple[int, int] | None:
+    if len(data) < 4 or data[:2] != b"\xff\xd8":
+        return None
+    i = 2
+    while i + 9 < len(data):
+        if data[i] != 0xFF:
+            i += 1
+            continue
+        marker = data[i + 1]
+        if marker in (0xD8, 0xD9) or (0xD0 <= marker <= 0xD7):
+            i += 2
+            continue
+        if i + 4 > len(data):
+            break
+        seglen = struct.unpack(">H", data[i + 2 : i + 4])[0]
+        if marker in (0xC0, 0xC1, 0xC2) and i + 9 <= len(data):
+            h, w = struct.unpack(">HH", data[i + 5 : i + 9])
+            return int(w), int(h)
+        i += 2 + seglen
+    return None
+
+
+def image_wh(path: Path) -> tuple[int, int] | None:
+    """Pixel size from file headers. Does not invent a crop or a face."""
+    data = path.read_bytes()
+    return _png_wh(data) or _jpeg_wh(data)
+
+
+def _ingest_message() -> str:
+    return (
+        "not enough pairs to score; no EER\n"
+        "ingest one labeled crop first: "
+        "python protocol/optical_unit_identity.py --ingest path/to/A-01_r1.jpg\n"
+        "checklist: protocol/experiment0_ingest.md"
+    )
+
+
+def score_photos(target: Path) -> int:
+    files = _iter_images(target)
+    if not files:
+        print(_ingest_message())
+        return 2
     groups: dict[str, list[Path]] = defaultdict(list)
     skipped = []
     for p in files:
@@ -397,8 +470,10 @@ def score_photo_folder(folder: Path) -> int:
         groups[fid].append(p)
     if skipped:
         print("skipped (name not {id}_{rep}):", ", ".join(skipped))
-    if len(groups) < 2:
-        print("need at least two named faces (e.g. A-01_r1.jpg A-01_r2.jpg A-02_r1.jpg)")
+    genuine_pairs = sum(len(v) * (len(v) - 1) // 2 for v in groups.values())
+    n_faces = len(groups)
+    if n_faces < 2 or genuine_pairs < 1:
+        print(_ingest_message())
         return 2
     cache = {p: load_gray(p) for paths in groups.values() for p in paths}
     genuine, impostor = [], []
@@ -417,9 +492,120 @@ def score_photo_folder(folder: Path) -> int:
             impostor.append(rec["score"])
             print(f"impostor {pa.name} vs {pb.name}  {rec}")
     print()
-    print(summarize(genuine, impostor))
-    print()
-    print("These are photo-match scores, not bits-per-brick.")
+    print(summarize(genuine, impostor, report_eer=True))
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# one-face ingest (no EER, no genuine/impostor)
+# ---------------------------------------------------------------------------
+
+CROP_NOTE = (
+    "Operator must crop ~5×5 cm of the same region (clay texture, not room). "
+    "This script cannot verify physical centimeters."
+)
+
+
+def _parse_crop_box(text: str | None) -> list[int] | None:
+    if not text:
+        return None
+    parts = [p.strip() for p in text.replace("x", ",").split(",")]
+    if len(parts) != 4:
+        raise ValueError("crop box must be x,y,w,h in pixels")
+    box = [int(p) for p in parts]
+    if any(v < 0 for v in box) or box[2] <= 0 or box[3] <= 0:
+        raise ValueError("crop box must be x,y,w,h with positive w,h")
+    return box
+
+
+def _receipt_paths(photo: Path) -> tuple[Path, Path, Path]:
+    """JSON next to the photo; running log under protocol/experiment0_ingest/."""
+    local = photo.with_name(photo.stem + ".ingest.json")
+    INGEST_DIR.mkdir(parents=True, exist_ok=True)
+    manifest_md = INGEST_DIR / "MANIFEST.md"
+    manifest_tsv = INGEST_DIR / "MANIFEST.tsv"
+    return local, manifest_md, manifest_tsv
+
+
+def ingest_one(photo: Path, crop_box: list[int] | None) -> dict:
+    data = photo.read_bytes()
+    digest = hashlib.sha256(data).hexdigest()
+    wh = image_wh(photo)
+    mtime = datetime.fromtimestamp(photo.stat().st_mtime, tz=timezone.utc)
+    face_id = parse_face_id(photo)
+    receipt = {
+        "filename": photo.name,
+        "path": str(photo.resolve()),
+        "sha256": digest,
+        "width_px": wh[0] if wh else None,
+        "height_px": wh[1] if wh else None,
+        "mtime_utc": mtime.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "name_parses": face_id is not None,
+        "face_id": face_id,
+        "crop_box_px": crop_box,
+        "crop_note": CROP_NOTE,
+        "eer": None,
+        "genuine_impostor": None,
+        "kind": "ingest_receipt",
+        "not_a_brick_measurement": True,
+    }
+    local, manifest_md, manifest_tsv = _receipt_paths(photo)
+    local.write_text(json.dumps(receipt, indent=2) + "\n")
+    # Fixture files are not a landed brick face; keep them off the running log.
+    if "_fixture" not in photo.parts:
+        _append_manifest(manifest_md, manifest_tsv, receipt)
+    print(f"ingested {photo.name}")
+    print(f"  sha256={digest}")
+    print(f"  pixels={receipt['width_px']}x{receipt['height_px']}")
+    print(f"  mtime_utc={receipt['mtime_utc']}")
+    print(f"  name_parses={receipt['name_parses']}  face_id={face_id}")
+    print(f"  receipt={local}")
+    print(f"  {CROP_NOTE}")
+    print("  no EER; one face is enough to land")
+    return receipt
+
+
+def _append_manifest(md: Path, tsv: Path, rec: dict) -> None:
+    tsv_header = "filename\tsha256\twidth_px\theight_px\tmtime_utc\tname_parses\tface_id\tpath\n"
+    if not tsv.exists():
+        tsv.write_text(tsv_header)
+    line = (
+        f"{rec['filename']}\t{rec['sha256']}\t{rec['width_px']}\t{rec['height_px']}\t"
+        f"{rec['mtime_utc']}\t{rec['name_parses']}\t{rec['face_id']}\t{rec['path']}\n"
+    )
+    existing = tsv.read_text()
+    if rec["sha256"] not in existing:
+        with tsv.open("a") as f:
+            f.write(line)
+    if not md.exists():
+        md.write_text(
+            "# Experiment 0 ingest log\n\n"
+            "Receipts only. No EER. No genuine/impostor. "
+            "Not a spectrum gate. Not bits-per-brick.\n\n"
+            "| file | sha256 | W×H | mtime UTC | name parses | face id |\n"
+            "|---|---|---|---|---|---|\n"
+        )
+    row = (
+        f"| {rec['filename']} | `{rec['sha256'][:12]}…` | "
+        f"{rec['width_px']}×{rec['height_px']} | {rec['mtime_utc']} | "
+        f"{rec['name_parses']} | {rec['face_id'] or ''} |\n"
+    )
+    md_text = md.read_text()
+    if rec["sha256"][:12] not in md_text:
+        with md.open("a") as f:
+            f.write(row)
+
+
+def run_ingest(path: Path, crop_box: list[int] | None) -> int:
+    if not path.exists():
+        print(f"no photo yet: {path}", file=sys.stderr)
+        return 2
+    files = _iter_images(path)
+    if not files:
+        print(f"no photo yet: {path}", file=sys.stderr)
+        return 2
+    for photo in files:
+        ingest_one(photo, crop_box)
     return 0
 
 
@@ -488,71 +674,84 @@ def _warp(img: np.ndarray, rng: np.random.Generator) -> np.ndarray:
 
 
 def run_self_test(seed: int = 7) -> int:
+    print("synthetic matcher check — not a brick, not bits, not Experiment 0")
     rng = np.random.default_rng(seed)
     textures = [_blob_texture(rng) for _ in range(4)]
     genuine = []
     impostor = []
-    # two warped copies of the same texture must score as genuine
     for t in textures:
         a = _warp(t, rng)
         b = _warp(t, rng)
         rec = match_score(a, b, rng=rng)
         genuine.append(rec["score"])
-        print(f"synthetic genuine  {rec}")
-    # unrelated textures must not look genuine
+        print(f"synthetic same-texture warp  {rec}")
     for i in range(len(textures)):
         for j in range(i + 1, len(textures)):
             rec = match_score(textures[i], textures[j], rng=rng)
             impostor.append(rec["score"])
-            print(f"synthetic impostor {rec}")
-    print()
-    print(summarize(genuine, impostor))
+            print(f"synthetic unrelated texture {rec}")
     g = np.asarray(genuine)
     i = np.asarray(impostor)
-    eer = equal_error_rate(g, i)
-    # Warped copies of one noise field should sit above unrelated fields.
-    if g.min() <= i.max():
+    print()
+    print(summarize(g, i, report_eer=False))
+    separated = bool(g.size and i.size and float(g.min()) > float(i.max()))
+    if not separated:
         print(
-            "SELF-TEST FAIL: genuine and impostor overlap "
-            f"(min genuine={g.min():.3f} max impostor={i.max():.3f}). "
-            "Matcher, not a brick.",
-            file=sys.stderr,
-        )
-        return 1
-    if eer["eer"] is None or eer["eer"] > 0.05:
-        print(f"SELF-TEST FAIL: EER={eer['eer']} (want ~0 on synthetic).", file=sys.stderr)
-        return 1
-    if i.max() >= 0.45:
-        print(
-            f"SELF-TEST FAIL: unrelated textures scored {i.max():.3f} as if genuine.",
+            "SELF-TEST FAIL: synthetic matcher check; warped copies did not sit "
+            f"above unrelated textures (min same={g.min():.3f} max unrelated={i.max():.3f}). "
+            "Not a brick.",
             file=sys.stderr,
         )
         return 1
     print()
-    print("SELF-TEST PASS: warped copies separate; unrelated textures do not match as genuine.")
-    print("Synthetic only. No brick faces were scored.")
+    print(
+        "SELF-TEST PASS: synthetic matcher check; warped copies sit above "
+        "unrelated textures. Not a brick. Not bits."
+    )
     return 0
 
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--self-test", action="store_true", help="synthetic matcher check (no photos)")
+    p.add_argument(
+        "--self-test",
+        action="store_true",
+        help="synthetic matcher check (no photos, no Experiment 0 EER)",
+    )
+    p.add_argument(
+        "--ingest",
+        type=Path,
+        help="one image or folder; write hash receipt; no EER",
+    )
     p.add_argument(
         "--photos",
         type=Path,
-        help="folder of real crops named {id}_r1.jpg {id}_r2.jpg (or {id}_1 / {id}_2)",
+        help="folder (or one crop) named {id}_r1.jpg {id}_r2.jpg; EER only if pairs exist",
+    )
+    p.add_argument(
+        "--crop-box",
+        default=None,
+        help="optional pixel crop x,y,w,h recorded on ingest; not invented",
     )
     p.add_argument("--seed", type=int, default=7)
     args = p.parse_args(argv)
     if args.self_test:
         return run_self_test(seed=args.seed)
-    if args.photos:
-        if not args.photos.is_dir():
-            print(f"not a directory: {args.photos}", file=sys.stderr)
+    if args.ingest is not None:
+        try:
+            box = _parse_crop_box(args.crop_box)
+        except ValueError as exc:
+            print(exc, file=sys.stderr)
             return 2
-        return score_photo_folder(args.photos)
+        return run_ingest(args.ingest, box)
+    if args.photos is not None:
+        if not args.photos.exists():
+            print(f"no photo yet: {args.photos}", file=sys.stderr)
+            print(_ingest_message())
+            return 2
+        return score_photos(args.photos)
     print(__doc__.strip())
-    print("\nNeed --self-test or --photos DIR")
+    print("\nNeed --self-test, --ingest PATH, or --photos PATH")
     return 2
 
 

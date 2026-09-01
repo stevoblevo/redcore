@@ -39,13 +39,14 @@ Twenty fired-clay faces. Each face **twice**.
 4. Save as `A-01_r1.jpg`, `A-01_r2.jpg`, … Same stem, `_r1` / `_r2` (or `_1` / `_2`).
 5. No flash if it blows the clay white. Window light or shade. Do not rotate the crop 90° between reps unless you also record that.
 
-Name the files so a script can pair them. The matcher is [optical_unit_identity.py](optical_unit_identity.py).
+Name the files so a script can pair them. The matcher is [optical_unit_identity.py](optical_unit_identity.py). One face can land before any pair exists — [experiment0_ingest.md](experiment0_ingest.md):
 
 ```
+python protocol/optical_unit_identity.py --ingest path/to/A-01_r1.jpg
 python protocol/optical_unit_identity.py --photos path/to/crops
 ```
 
-`--self-test` is synthetic only (warped noise). It does not measure a brick.
+`--ingest` writes a hash receipt. No EER. `--photos` scores only when two faces and a genuine pair exist. `--self-test` is a synthetic matcher check (warped noise). It does not measure a brick.
 
 ## Score
 
