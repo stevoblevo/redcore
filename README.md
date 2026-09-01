@@ -13,42 +13,26 @@ This is not a wall that thinks.
 
 Twenty common bricks. A $20 TMR board. A plywood cradle. Four measurements. Publish the fail if it fails.
 
+## Contribute
+
+Distributed research. Pick an issue. Fail is a result.
+
+- Board: [CONTRIBUTING.md](CONTRIBUTING.md)
+- **$0 today:** [photograph 20 faces twice](https://github.com/stevoblevo/redcore/issues/11)
+- **~$100:** [Afternoon Zero](https://github.com/stevoblevo/redcore/issues/2)
+- **GPU:** [issue #1](https://github.com/stevoblevo/redcore/issues/1) — Job A is done; next is B-1060, not the 512 Relax
+- Open work: [issues](https://github.com/stevoblevo/redcore/issues)
+
 ## Three objects
 
 | Object | What it is | What it is not |
 |---|---|---|
 | **Brickmark** | Magnetic provenance assay. Batch first. Course later. | A cryptographic PUF |
 | **Hearthplate** | Self-describing ceramic plate for the 2180 reader | A petabyte façade |
-| **Fabric** | Unwired magnetostriction re-scan | ReRAM / a mortar bus |
-
-## Paper
-
-- [briefs/v3.md](briefs/v3.md) — living brief
-- [briefs/v4.md](briefs/v4.md) — registration-limited bits (~60/face at 1 mm, not 10⁴)
-- [cuda/results/PREHARDWARE.md](cuda/results/PREHARDWARE.md) — what software already killed
-
-## If you have a GPU
-
-Default job is **A** (6 GB cards welcome): [cuda/DONATE.md](cuda/DONATE.md)
-
-```
-git clone https://github.com/stevoblevo/redcore.git
-cd redcore
-mumax3 -http= cuda/mumax/strain_sweep_ku.mx3
-```
-
-Paste five `stress_Pa` lines on [issue #1](https://github.com/stevoblevo/redcore/issues/1). Receipt: [cuda/RECEIPT.md](cuda/RECEIPT.md). Fail is a result. Do not hunt for TRM lock.
-
-## Community mint (unofficial)
-
-A Solana token appeared after the public posts. Address and terms: **[COMMUNITY.md](COMMUNITY.md)**
-
-```
-7Hrhz5M6c7yvYXcSVjcZmNeDXNH9Bmh6cPTShCGgpump
-```
-
-It is not the research, not a treasury, not financial advice.
+| **Fabric** | Damage-scale re-scan at best | A masonry-stress write |
 
 ## Dead on arrival — do not reopen
 
-Bed-face optical archive in a laid wall. 3 V brick-body ReRAM. Petabyte-per-façade economics. PUF-as-crypto. Firebox storage (Curie 585 °C). Stock mumax Relax as lab TRM.
+Bed-face optical archive in a laid wall. 3 V brick-body ReRAM. Petabyte-per-façade economics. PUF-as-crypto. Firebox storage. Stock mumax Relax as lab TRM. Fabric-as-write in the 12-grain RVE.
+
+Unofficial community mint: [COMMUNITY.md](COMMUNITY.md)
