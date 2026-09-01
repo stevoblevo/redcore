@@ -1,0 +1,63 @@
+// Redcore JOB A — stock mumax 3.12 Fabric proxy.
+// NOT cubic B1/B2 (that is strain_sweep.mx3 on mumax3-me).
+// Ku1 = (3/2) λs σ along z. Same placeholder that failed to lock TRM.
+// We want Δm vs stress, not a compass needle.
+// Grid matches the finished Tower 1060 prove so 6 GB Pascal can finish.
+
+SetGridsize(256, 128, 16)
+SetCellsize(8e-9, 8e-9, 8e-9)
+
+Ms0 := 480e3
+Msat  = Ms0
+Aex   = 1.33e-11
+alpha = 0.5
+lambda_s := 23e-6
+B_ext = vector(0, 0, 50e-6)
+
+Ngrains := 12
+for i := 0; i < Ngrains; i++ {
+    cx := rand() * 2.048e-6
+    cy := rand() * 1.024e-6
+    cz := 0.02e-6 + rand()*0.09e-6
+    r  := 0.04e-6 + rand()*0.03e-6
+    DefRegion(i+1, Superball(2*r, 1).Transl(cx-1.024e-6, cy-0.512e-6, cz-0.064e-6))
+    AnisU.SetRegion(i+1, vector(0, 0, 1))
+}
+Msat.SetRegion(0, 0)
+m = RandomMagSeed(20260901)
+SetSolver(5)
+FixDt = 1e-13
+
+TableAdd(m)
+TableAdd(E_total)
+
+print("JOB_A stock3.12 Ku proxy. Not B1/B2. Not TRM lock.")
+
+sig := 0.0
+Ku1 = 1.5 * lambda_s * sig
+run(2e-10)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average(), "E", E_total)
+
+sig = 0.5e6
+Ku1 = 1.5 * lambda_s * sig
+run(2e-10)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average(), "E", E_total)
+
+sig = 2e6
+Ku1 = 1.5 * lambda_s * sig
+run(2e-10)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average(), "E", E_total)
+
+sig = 5e6
+Ku1 = 1.5 * lambda_s * sig
+run(2e-10)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average(), "E", E_total)
+
+sig = 10e6
+Ku1 = 1.5 * lambda_s * sig
+run(2e-10)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average(), "E", E_total)
+
+Save(m)
+Save(B_demag)
+print("JOB_A done. Paste the five stress_Pa lines on issue #1.")
