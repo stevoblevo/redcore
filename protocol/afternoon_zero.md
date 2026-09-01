@@ -2,7 +2,7 @@
 
 The first physical try is **not** a fireplace and **not** a written plate. It is twenty bricks, a $20 TMR breakout, a cradle with pins, and four measurements.
 
-- Shopping: [shopping.md](shopping.md)
+- Shopping: [shopping.md](shopping.md) — every Buy cell is a purchase link
 - Do not buy yet: [do_not_buy_yet.md](do_not_buy_yet.md)
 
 If reality disagrees with the model, reality wins.
