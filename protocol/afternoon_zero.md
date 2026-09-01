@@ -1,53 +1,85 @@
-# Redcore Afternoon Zero — easy-button protocol
+# Afternoon Zero — kitchen-table protocol
 
-The first physical try is **not** a fireplace and **not** a written plate.
-It is twenty bricks, a $20 TMR breakout, a cradle with pins, and four measurements.
-Everything below is what the sims say you should see. If reality disagrees, reality wins.
+The first physical try is **not** a fireplace and **not** a written plate. It is twenty bricks, a $20 TMR breakout, a cradle with pins, and four measurements.
 
-## Kit (~$150–400, one afternoon)
+- Shopping: [shopping.md](shopping.md)
+- Do not buy yet: [do_not_buy_yet.md](do_not_buy_yet.md)
 
-- 20 common red bricks, two lots if possible (home center + a second brand/pit)
-- NVE ALT023 or ALT024 TMR breakout (~$20–25) or MDT TMR2102 (~$14)
-- ADS1115 or similar 16-bit ADC + any USB MCU
-- 3D-printed or plywood brick cradle with two alignment pins
-- feeler gauges or 0.2 / 1 / 5 mm plastic shims
-- a printed fridge-magnet sheet (forgery control)
-- phone magnetometer only as a sanity check — it will see Earth, not the map
+If reality disagrees with the model, reality wins.
 
-## Do not buy yet
+## Safety
 
-- ceramic nanolayer write cell
-- fireplace cassette hardware
-- load frame
+Bricks are 2–3 kg. No glass table. Electronics are 3.3–5 V. Nothing goes in a fireplace.
 
-## Sequence
+## Label first
 
-### Step 1. Bulk assay (~20 min)
-One reading per brick, same pose, TMR at 5 mm. Earth subtracted.
-- Pass: two lots separate more than they overlap.
-- Fail does not kill unit assay. Batch and unit are different products.
+Pencil on the *end*, not the scan face:
 
-### Step 2. Spectrum / standoff (~60 min)
-One face. Scan a 3 mm grid at 1 mm and 5 mm standoff.
-- Pass: spatial power drops like exp(−2πkh). Independent-cell count is tens-to-low-hundreds, not thousands.
-- Fail: no structure, or spectrum too red. Unit assay stops.
+```
+A-01  HD RED0126  2026-09-01
+B-01  HD used     2026-09-01
+```
 
-### Step 3. Forgery control (~20 min)
-Fridge-magnet sheet on a dummy face. Repeat 1 mm / 5 mm.
-- Pass: film ratio B(1)/B(5) >> bulk (~4.8 vs ~1.06).
-- Fail: cannot tell film from brick. Do not say PUF.
+Lot A = one stack / one store. Lot B = the other. Mixed lots make the experiment garbage.
 
-### Step 4. Remount BER (~40 min)
-Ten remounts, two operators if you have them. Sign-quantise cells at 3 mm.
-- Pass: BER under 8%. Model ~65 bits/face at SNR 10.
-- Fail: BER > 15%. Fix the cradle before adding bricks.
+## Build the cradle (20 min)
 
-## Already retired by simulation
+A parking space so the brick sits in the same place every time.
 
-Firebox as a computer (Curie 585 °C). Brick-body ReRAM at 3 V. Bed-face optical archive in a laid wall.
+1. Plywood ~12 × 6 inches.
+2. Three rails. Brick slides in and stops. No wobble.
+3. Two ¼″ dowel pins 4 inches apart.
+4. Tape the TMR board so the chip faces *down* at the brick.
+5. Standoff: **5 mm** first, **1 mm** later. Feeler gauges as spacers.
 
-## Cannot retire in software
+If the board rocks, the measurement is noise. The jig is the product.
 
-Hearthplate fire test (~800 MPa film stress through 1000 K). Real σ_B/n. Real batch separation.
+## Wire it (15 min)
 
-The easy button is the cradle and the sequence. Not the wall.
+NVE ALT023-10E-EVB01: supply +, supply −, two bridge outputs.
+
+1. Power from MCU 3.3 V or 5 V.
+2. Bridge outputs to ADS1115 **A0 and A1 as a differential pair**.
+3. ADS1115 I²C to the MCU. USB to the laptop.
+
+Flash an ADS1115 example. Done when a fridge magnet waved six inches away jumps the number and empty hands do not. A phone compass is not the instrument.
+
+## Zero the room (5 min)
+
+No brick. Average 30 seconds. Call it **Z**. Later readings are **raw − Z**. No steel filing cabinet.
+
+## Step 1 — Bulk assay (~20 min)
+
+5 mm standoff. Two readings per brick, same pose. A-01…A-10 then B-01…B-10.
+
+- **Pass:** A pile and B pile separate.
+- **Fail:** overlap. Batch identity dead for *these lots*. Try another pit. Unit assay is a different product.
+
+## Step 2 — One face, two heights (~60 min)
+
+Strongest brick. 3 × 6 grid. 18 points at 5 mm, same 18 at 1 mm.
+
+- **Pass:** 1 mm bumpier; bumps line up.
+- **Fail:** TV snow, or 1 mm is a photocopy of 5 mm. Stop saying bits-per-brick.
+
+You are asking whether a map exists, not computing 60 bits tonight.
+
+## Step 3 — Fridge magnet (~20 min)
+
+Sheet on cardboard, same two heights.
+
+- **Pass:** sheet 1/5 mm ratio obviously bigger than the brick (model ~4.8 vs ~1.06).
+- **Fail:** cannot tell film from clay. Do not say PUF.
+
+## Step 4 — Remount (~40 min)
+
+Same brick, 1 mm, center. Ten reseats. Second operator if present.
+
+- **Pass:** numbers agree within a few percent.
+- **Fail:** tighten the cradle before buying more bricks.
+
+## What the number should look like
+
+Face fields 1–10 µT on Earth ~50 µT. TMR at 5 V and 200 mV/V/mT ≈ 1 mV per µT. You want millivolts after subtracting Z. If a fridge magnet from two feet to two inches does nothing, the wiring is wrong, not the brick.
+
+Publish the four plots, including a fail. The easy button is the cradle. Not the wall.
