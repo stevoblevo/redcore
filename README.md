@@ -13,6 +13,10 @@ This is not a wall that thinks. This is not a token.
 
 Twenty common bricks. A $20 TMR board. A plywood cradle. Four measurements. Publish the fail if it fails.
 
+## Reality program
+
+[docs/SAELION_REALITY_PROGRAM.md](docs/SAELION_REALITY_PROGRAM.md) turns the surviving Redcore claims into a falsification staircase: cheap physical gates first, hostile baselines, explicit kill criteria, measurement before larger simulation, a naive-reader Hearthplate test, and an external-lab path that rents characterization instead of buying a laboratory.
+
 ## Three objects
 
 | Object | What it is | What it is not |
