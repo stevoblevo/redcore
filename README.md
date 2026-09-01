@@ -3,7 +3,7 @@
 Fired clay already holds a magnetic map. That map is **provenance**, not memory.
 The archive that belongs next to a house is a small ceramic plate a stranger in 2180 can read without our company, our format, or our drive.
 
-This is not a wall that thinks. This is not a token.
+This is not a wall that thinks.
 
 ## Start here
 
@@ -12,10 +12,6 @@ This is not a wall that thinks. This is not a token.
 3. Do not buy the furnace yet — [protocol/do_not_buy_yet.md](protocol/do_not_buy_yet.md)
 
 Twenty common bricks. A $20 TMR board. A plywood cradle. Four measurements. Publish the fail if it fails.
-
-## Reality program
-
-[docs/SAELION_REALITY_PROGRAM.md](docs/SAELION_REALITY_PROGRAM.md) turns the surviving Redcore claims into a falsification staircase: cheap physical gates first, hostile baselines, explicit kill criteria, measurement before larger simulation, a naive-reader Hearthplate test, and an external-lab path that rents characterization instead of buying a laboratory.
 
 ## Three objects
 
@@ -33,18 +29,20 @@ Twenty common bricks. A $20 TMR board. A plywood cradle. Four measurements. Publ
 
 ## If you have a GPU
 
-[Issue #1](https://github.com/stevoblevo/redcore/issues/1) · [cuda/README.md](cuda/README.md) · [cuda/CALL_FOR_GPU.md](cuda/CALL_FOR_GPU.md)
-
-```
-mumax3 cuda/mumax/brickmark_pack.mx3
-mumax3 cuda/mumax/strain_sweep.mx3
-python cuda/python/postprocess.py path/to/B_demag.ovf
-```
+[Issue #1](https://github.com/stevoblevo/redcore/issues/1) · [cuda/README.md](cuda/README.md)
 
 Textbook magnetite constants. Fail is a published result.
 
+## Community mint (unofficial)
+
+A Solana token appeared after the public posts. Address and terms: **[COMMUNITY.md](COMMUNITY.md)**
+
+```
+7Hrhz5M6c7yvYXcSVjcZmNeDXNH9Bmh6cPTShCGgpump
+```
+
+It is not the research, not a treasury, not financial advice.
+
 ## Dead on arrival — do not reopen
 
-Bed-face optical archive in a laid wall. 3 V brick-body ReRAM. Petabyte-per-façade economics. PUF-as-crypto. Firebox storage (Curie 585 °C). A Pump.fun ticker as the project.
-
-Site: https://redcore-skein1.vercel.app
+Bed-face optical archive in a laid wall. 3 V brick-body ReRAM. Petabyte-per-façade economics. PUF-as-crypto. Firebox storage (Curie 585 °C).
