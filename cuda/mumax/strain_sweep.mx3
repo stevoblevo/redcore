@@ -1,10 +1,14 @@
 // Redcore WP2 — inverse magnetostriction, same pack.
-// Compression along Z = masonry / load-frame.
+// Comment says compression along Z = masonry / load-frame.
+// Honest: sig>0 and ezz=sig/E is tension. Flip sig (or Hooke) for masonry compression.
+// E=230 GPa / nu=0.26 are Fe3O4 grain stiffness, not clay.
+// B1/B2 exist on mumax3-me. Stock 3.12: mumax3 -vet this file; if B1 undefined, skip WP2.
 //
-// λ100 ≈ -20e-6, λ111 ≈ +78e-6
-// B1 = -(3/2) λ100 (c11-c12) ≈ +5.1e6 J/m³
-// B2 = -3 λ111 c44            ≈ -2.3e7 J/m³
-// If lab Δm has the opposite sign, flip B1 and B2 together and file an issue.
+// lambda100 ~ -20e-6, lambda111 ~ +78e-6
+// B1 = -(3/2) lambda100 (c11-c12) ~ +5.1e6 J/m3
+// B2 = -3 lambda111 c44            ~ -2.3e7 J/m3
+// If lab dm has the opposite sign, flip B1 and B2 together and file an issue.
+// 3.12 glue: Superball(2*r,1)==sphere(r). Slice literals not allowed; stresses unrolled. Comp(0)/Comp(2) for mx/mz. Constants unchanged.
 
 SetGridsize(512, 512, 96)
 SetCellsize(8e-9, 8e-9, 8e-9)
@@ -23,7 +27,7 @@ for i:=0; i<Ngrains; i++ {
     cy := rand()*4.096e-6
     cz := 0.1e-6 + rand()*0.56e-6
     r  := 0.12e-6 + rand()*0.18e-6
-    DefRegion(i+1, Sphere(r).Transl(cx-2.048e-6, cy-2.048e-6, cz-0.384e-6))
+    DefRegion(i+1, Superball(2*r, 1).Transl(cx-2.048e-6, cy-2.048e-6, cz-0.384e-6))
     AnisU.SetRegion(i+1, vector(rand()-0.5, rand()-0.5, rand()-0.5))
 }
 Msat.SetRegion(0, 0)
@@ -32,17 +36,68 @@ m = RandomMag()
 Relax()
 Save(m)
 
-stress := []float64{0.0, 0.5e6, 1e6, 2e6, 3e6, 5e6, 10e6}
 E  := 2.3e11
 nu := 0.26
 
-for s:=0; s<len(stress); s++ {
-    sig := stress[s]
-    exx = -nu * sig / E
-    eyy = -nu * sig / E
-    ezz =  sig / E
-    Relax()
-    Save(m)
-    Save(B_demag)
-    print("stress_Pa", sig, "mx", mx.Average(), "mz", mz.Average())
-}
+sig := 0.0
+exx = -nu * sig / E
+eyy = -nu * sig / E
+ezz =  sig / E
+Relax()
+Save(m)
+Save(B_demag)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average())
+
+sig = 0.5e6
+exx = -nu * sig / E
+eyy = -nu * sig / E
+ezz =  sig / E
+Relax()
+Save(m)
+Save(B_demag)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average())
+
+sig = 1e6
+exx = -nu * sig / E
+eyy = -nu * sig / E
+ezz =  sig / E
+Relax()
+Save(m)
+Save(B_demag)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average())
+
+sig = 2e6
+exx = -nu * sig / E
+eyy = -nu * sig / E
+ezz =  sig / E
+Relax()
+Save(m)
+Save(B_demag)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average())
+
+sig = 3e6
+exx = -nu * sig / E
+eyy = -nu * sig / E
+ezz =  sig / E
+Relax()
+Save(m)
+Save(B_demag)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average())
+
+sig = 5e6
+exx = -nu * sig / E
+eyy = -nu * sig / E
+ezz =  sig / E
+Relax()
+Save(m)
+Save(B_demag)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average())
+
+sig = 10e6
+exx = -nu * sig / E
+eyy = -nu * sig / E
+ezz =  sig / E
+Relax()
+Save(m)
+Save(B_demag)
+print("stress_Pa", sig, "mx", m.Comp(0).Average(), "mz", m.Comp(2).Average())
