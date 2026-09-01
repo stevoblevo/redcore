@@ -1,0 +1,39 @@
+// Redcore JOB B-1060 — grain pack for continuation postprocess.
+// NOT brickmark_pack.mx3 (512x512x96 Relax). That filled 8 GB and cooked dest.
+// GTX 1060 6 GB. Same constants. RK45, not Relax.
+// Representative volume, not a brick. Not TRM lock.
+
+SetGridsize(256, 256, 32)
+SetCellsize(8e-9, 8e-9, 8e-9)
+
+Msat  = 4.80e5
+Aex   = 1.33e-11
+Ku1   = 1.4e4
+alpha = 0.5
+B_ext = vector(0, 0, 50e-6)
+
+Ngrains := 24
+for i := 0; i < Ngrains; i++ {
+    cx := rand() * 2.048e-6
+    cy := rand() * 2.048e-6
+    cz := 0.03e-6 + rand()*0.20e-6
+    r  := 0.06e-6 + rand()*0.10e-6
+    DefRegion(i+1, Superball(2*r, 1).Transl(cx-1.024e-6, cy-1.024e-6, cz-0.128e-6))
+    AnisU.SetRegion(i+1, vector(rand()-0.5, rand()-0.5, rand()-0.5))
+    Ku1.SetRegion(i+1, 1.4e4)
+}
+Msat.SetRegion(0, 0)
+m = RandomMagSeed(20260901)
+SetSolver(5)
+FixDt = 1e-13
+TableAdd(m)
+TableAdd(E_total)
+TableAutosave(1e-10)
+
+print("JOB_B_1060 start. Not 512 Relax. Not TRM lock.")
+run(5e-10)
+Save(m)
+Save(B_demag)
+Save(m.Comp(2))
+print("JOB_B_1060 done. mx", m.Comp(0).Average(), "mz", m.Comp(2).Average(), "E", E_total)
+print("postprocess: python cuda/python/postprocess.py B_demag000000.ovf")
