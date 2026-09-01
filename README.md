@@ -25,13 +25,19 @@ Twenty common bricks. A $20 TMR board. A plywood cradle. Four measurements. Publ
 
 - [briefs/v3.md](briefs/v3.md) — living brief
 - [briefs/v4.md](briefs/v4.md) — registration-limited bits (~60/face at 1 mm, not 10⁴)
-- [docs/STATUS.md](docs/STATUS.md)
+- [cuda/results/PREHARDWARE.md](cuda/results/PREHARDWARE.md) — what software already killed
 
 ## If you have a GPU
 
-[Issue #1](https://github.com/stevoblevo/redcore/issues/1) · [cuda/README.md](cuda/README.md)
+Default job is **A** (6 GB cards welcome): [cuda/DONATE.md](cuda/DONATE.md)
 
-Textbook magnetite constants. Fail is a published result.
+```
+git clone https://github.com/stevoblevo/redcore.git
+cd redcore
+mumax3 -http= cuda/mumax/strain_sweep_ku.mx3
+```
+
+Paste five `stress_Pa` lines on [issue #1](https://github.com/stevoblevo/redcore/issues/1). Receipt: [cuda/RECEIPT.md](cuda/RECEIPT.md). Fail is a result. Do not hunt for TRM lock.
 
 ## Community mint (unofficial)
 
@@ -45,4 +51,4 @@ It is not the research, not a treasury, not financial advice.
 
 ## Dead on arrival — do not reopen
 
-Bed-face optical archive in a laid wall. 3 V brick-body ReRAM. Petabyte-per-façade economics. PUF-as-crypto. Firebox storage (Curie 585 °C).
+Bed-face optical archive in a laid wall. 3 V brick-body ReRAM. Petabyte-per-façade economics. PUF-as-crypto. Firebox storage (Curie 585 °C). Stock mumax Relax as lab TRM.
