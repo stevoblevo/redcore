@@ -1,0 +1,48 @@
+// Redcore WP2 — inverse magnetostriction, same pack.
+// Compression along Z = masonry / load-frame.
+//
+// λ100 ≈ -20e-6, λ111 ≈ +78e-6
+// B1 = -(3/2) λ100 (c11-c12) ≈ +5.1e6 J/m³
+// B2 = -3 λ111 c44            ≈ -2.3e7 J/m³
+// If lab Δm has the opposite sign, flip B1 and B2 together and file an issue.
+
+SetGridsize(512, 512, 96)
+SetCellsize(8e-9, 8e-9, 8e-9)
+
+Msat  = 4.80e5
+Aex   = 1.33e-11
+Ku1   = 1.4e4
+Alpha = 0.5
+B1    =  5.1e6
+B2    = -2.3e7
+B_ext = vector(0, 0, 50e-6)
+
+Ngrains := 64
+for i:=0; i<Ngrains; i++ {
+    cx := rand()*4.096e-6
+    cy := rand()*4.096e-6
+    cz := 0.1e-6 + rand()*0.56e-6
+    r  := 0.12e-6 + rand()*0.18e-6
+    DefRegion(i+1, Sphere(r).Transl(cx-2.048e-6, cy-2.048e-6, cz-0.384e-6))
+    AnisU.SetRegion(i+1, vector(rand()-0.5, rand()-0.5, rand()-0.5))
+}
+Msat.SetRegion(0, 0)
+
+m = RandomMag()
+Relax()
+Save(m)
+
+stress := []float64{0.0, 0.5e6, 1e6, 2e6, 3e6, 5e6, 10e6}
+E  := 2.3e11
+nu := 0.26
+
+for s:=0; s<len(stress); s++ {
+    sig := stress[s]
+    exx = -nu * sig / E
+    eyy = -nu * sig / E
+    ezz =  sig / E
+    Relax()
+    Save(m)
+    Save(B_demag)
+    print("stress_Pa", sig, "mx", mx.Average(), "mz", mz.Average())
+}
