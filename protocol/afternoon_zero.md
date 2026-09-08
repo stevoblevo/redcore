@@ -4,6 +4,7 @@ The first physical try is **not** a fireplace and **not** a written plate. It is
 
 - Shopping: [shopping.md](shopping.md)
 - Do not buy yet: [do_not_buy_yet.md](do_not_buy_yet.md)
+- Complementary cheap unit-identity gate (optical texture, not TMR): [experiment0_optical.md](experiment0_optical.md)
 
 If reality disagrees with the model, reality wins.
 
