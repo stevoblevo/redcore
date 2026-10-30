@@ -2,7 +2,7 @@
 
 > Brickmark is a magnetic provenance assay for fired clay (batch provenance first; unit or course identity only if repeatability survives measurement). It is not a PUF and makes no security claims. The identity unit may be the course of four to eight bricks. Experiment 0 collects phone photos of twenty clay faces, named `{lot}-{nn}_r{rep}.jpg` and submitted as a GitHub issue. The v4 figures are MODEL ONLY; spectrum gate #3 is UNMEASURED.
 
-The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("bricks"), six rooms, and Tinder, a guide sprite. Everything an agent needs is in one fetch at [llms-full.txt](https://stevoblevo.github.io/redcore/llms-full.txt).
+The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("bricks"), six rooms, Tinder, a guide sprite, an explorable journey "The North That Was" (#north) and an Autoplay tour (#autoplay). Everything an agent needs is in one fetch at [llms-full.txt](https://stevoblevo.github.io/redcore/llms-full.txt).
 
 ## What Brickmark is
 - [Site: the Hearth](https://stevoblevo.github.io/redcore/#hearth): provenance assay, not a PUF; the course is the unit
@@ -35,4 +35,5 @@ The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("b
 ## Optional
 - [Saelion Field](https://saelion.co/field): lore / inspiration only, not a source
 - [Changelog](https://raw.githubusercontent.com/stevoblevo/redcore/main/CHANGELOG.md)
+- [Previous build v0.3.1](https://stevoblevo.github.io/redcore/v0.3.1/)
 - [Previous build v0.3.0](https://stevoblevo.github.io/redcore/v0.3.0/)

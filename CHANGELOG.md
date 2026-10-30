@@ -1,6 +1,9 @@
 # Changelog
 
 - **v0.1.0** — 2026-10-29 — First data-collection site in `/docs` (checklist with saved progress, photo-name helper, prefilled issue submit) + `data-submission` issue template.
+## v0.4.0 — 2026-10-29
+- Site: "The North That Was", an explorable journey along one glowing field line (↟ door + Hearth entry, #north deep links): Clay Pit (stir), Kiln (1050 °C), Cooling (675/580 °C, drag the compass to lock), Course (pattern, not brick), Long Years (lore time-lapse), Reader (exp(−2πkh), Gate #3 UNMEASURED), The Ask (into the quest course); three hidden side paths (Tablet, Wanderer Ash, Scroll) add sigils, counter now 8. Autoplay toggle (top bar, Hearth, adventure, #autoplay): tours every room, the reader once, every station and branch with captions + progress (~73 s), click/Space pause, Esc stop, never writes saved progress; reduced-motion aware; Perch rides along. llms-full.txt tidied (form-label junk removed) + adventure text. v0.3.1 kept at docs/v0.3.1/.
+
 ## v0.3.1 — 2026-10-29
 - Site: Tinder pet mode toggle (Follow / Perch / Nap) via top-bar ember icon or tap-and-hold menu, saved in localStorage; Perch is the default on phones and with prefers-reduced-motion; perches per room and glides on room change; drag/throw return to perch. In-site clay-tablet reader for repo docs (#read=path deep links, vendored marked 12.0.2 + license, Esc/✕, draggable, relative links stay in-reader, 'leaving the hearth' cue for GitHub issues). Agent files: robots.txt, sitemap.xml, llms.txt, llms-full.txt, OG/meta tags, 'for agents' door in the Plate Library. v0.3.0 kept at docs/v0.3.0/.
 

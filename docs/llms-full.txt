@@ -96,13 +96,7 @@ Room III · the Namer's Bench · pattern {lot}-{nn}_r{rep}.jpg
 
 Stamp a name into the clay.
 
-LotAB
-Face # (1–20)
-Capturer1r2
-
-A-01_r1.jpgtap to copy
-
-Unroll the full shot list for this lot
+Controls: lot (A or B), face number (1–20), capture (r1 or r2). The tablet shows the resulting name, e.g. A-01_r1.jpg; tap to copy. A details panel lists the full shot list for the chosen lot.
 
 Room IV · the Three Pillars · quoted from the repo only
 
@@ -131,7 +125,7 @@ Curve is the model exp(−2πkh) only, with no data. Dots mark the gate's four s
 
 The gate: on one strong face, scan at 0.25–0.5 mm pitch, repeat at 0.5 / 1 / 2 / 5 mm standoff, and compare measured B-maps' height attenuation against exp(−2πkh). If the measured spectrum is much redder, the unit assay may be dead.
 
-Controls: empty-jig scan, same scan twice without remount, scan after remount, magnetic-sheet control. A phone photo is not a B-map and does not touch this gate. Issue #3 →
+Controls: empty-jig scan, same scan twice without remount, scan after remount, magnetic-sheet control. A phone photo is not a B-map and does not touch this gate. Issue #3: https://github.com/stevoblevo/redcore/issues/3
 
 briefs/v4.md §1 · briefs/v3.md · docs/SAELION_REALITY_PROGRAM.md · cuda/python/postprocess.py
 
@@ -141,13 +135,7 @@ Carry the course to the assay.
 
 Write the course's label, then deliver it. A prefilled GitHub issue opens; drag your zip of photos into it before posting. No git needed.
 
-Lots
-Faces photographed
-Lighting / reps
-
-Notes (weathered, painted, fails…)
-
-Deliver to the assayopens a prefilled issue ↗
+Fields: lots; faces photographed; lighting / reps; notes (weathered, painted, fails…). The "Deliver to the assay" button opens a prefilled GitHub issue.
 
 Prefer the existing thread? Attach the zip on issue #11.
 
@@ -159,7 +147,21 @@ Butler, R. F. (1992). Paleomagnetism: Magnetic Domains to Geologic Terranes, ch.
 
 Lore / inspiration, not a source: Saelion Field · AND SO. Art: Redcore checkpoint stills from the house library.
 
-Redcore · github.com/stevoblevo/redcore · v0.3.1 · previous builds: v0.3.0 · v0.2.1 · Publish the fail if it fails.
+Redcore · github.com/stevoblevo/redcore · v0.4.0 · previous builds: v0.3.1 · v0.3.0 · v0.2.1 · Publish the fail if it fails.
+
+## The North That Was (v0.4.0 adventure; lore + model, no measured data)
+Entered from the ↟ door in the room map or the Hearth ("Walk The North That Was"); deep links #north and #north=<station>. A journey along one glowing magnetic field line, following one brick's life. Tinder leads. Each station has a glyph: ∴ △ ↟ ▦ ◷ ∿ ⊙.
+1. ∴ The Clay Pit: wet clay with random magnetite and hematite grains; stirring only swirls them, so there is no north. (Picture of the idea, not a simulation.)
+2. △ The Kiln: fire to 1050 °C (the site's illustrative firing peak); every grain's moment flips freely and old directions are wiped.
+3. ↟ The Cooling: below the hematite Néel temperature ≈675 °C and the magnetite Curie temperature ≈580 °C (Dunlop & Özdemir 1997; Butler 1992) grains freeze in a slight preference for Earth's field: "the north that was". Drag the compass onto the brick to see it lock (it spins if still above 580 °C). Alignment is exaggerated and the direction is illustrative, not a measured declination.
+4. ▦ The Course: one brick gives one noisy arrow; laid with neighbours, the pattern across the course is the candidate identity, only if measured course BER earns it. Visual only; it does not change saved quest progress.
+5. ◷ The Long Years (lore): a time-lapse of seasons and centuries over the wall. The arrows are drawn unchanged; the effect of weathering on remanence is not measured.
+6. ∿ The Reader: a scanner at standoff h; each spatial frequency k fades as exp(−2πkh) (synthetic source, model curve). Whether real bricks survive this is spectrum gate #3, UNMEASURED (issue #3).
+7. ⊙ The Ask: "You can help: photograph a face." Leads into the quest course (Room II).
+Side paths (unsealed by play): ≡ The Tablet (decorative wedge marks; lore, not a real inscription or translation; unsealed by stirring the pit), ✧ The Wanderer (Ash, Tinder's ash cousin; unsealed after centuries pass), § The Scroll (lore verse "The kiln forgets, the cooling chooses, the wall keeps, the reader asks."; unsealed after one scanner pass). Each holds a sigil; the hidden-sigil counter is now 8 (five in the rooms, three on side paths).
+
+## Autoplay (v0.4.0)
+A ▶ toggle in the top bar, on the Hearth, and in the adventure, or the deep link #autoplay. It visits every room, opens one repo doc in the tablet reader, then walks every station and side path, demoing the stir, firing, cooling, compass lock, laying the course, the time-lapse and the scanner, with Tinder's captions and a progress bar; it ends at The Ask (about 73 s). Click or Space pauses/resumes, Esc stops, ⏭ skips a step. It never writes saved quest progress or sigils.
 
 ## Sources
 1. Dunlop, D. J. & Özdemir, Ö. (1997). Rock Magnetism: Fundamentals and Frontiers. Cambridge University Press. https://doi.org/10.1017/CBO9780511612794
