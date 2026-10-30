@@ -70,7 +70,7 @@ var SCRUB={
 function stId(){return J().ST[J().cur()].id;}
 function onMain(){return J().ST[J().cur()].y===0;}
 var g={acc:0,last:0,edge:false,travel:false,idle:null,v:0};
-function travel(dxPx){var c=J().cam(),x=c[0]+dxPx/innerWidth*1.1;x=Math.max(-.15,Math.min(6.15,x));J().setCam(x,0);g.travel=true;jmPaint();clearTimeout(g.idle);g.idle=setTimeout(settle,RM()?60:180);}
+function travel(dxPx){var c=J().cam(),x=c[0]+dxPx/innerWidth*1.1;x=Math.max(-.15,Math.min(6.15,x));J().setCam(x,0);g.travel=true;jmPaint();clearTimeout(g.idle);g.idle=setTimeout(settle,200);}
 function nearest(x){var ST=J().ST,rv=J().revealed(),bi=0,bd=1e9;ST.forEach(function(s,i){if(s.y!==0)return;var d=Math.abs(s.x-x);if(d<bd){bd=d;bi=i;}});return bi;}
 function settle(){g.travel=false;if(!journeyOpen())return;var x=J().cam()[0],i=nearest(x);if(guided()){var same=i===J().cur();J().goSt(i,same);if(RM())J().setCam(J().ST[i].x,0);}else if(i!==J().cur()){/* free: no snap, but know where we are */J().goSt(i,true);J().setCam(x,0);}window.__lastStation={id:J().ST[i].id,at:Date.now()};}
 function sidePath(dir){/* dir -1 = up, +1 = down */var ST=J().ST,s=ST[J().cur()],rv=J().revealed();
