@@ -147,7 +147,7 @@ Butler, R. F. (1992). Paleomagnetism: Magnetic Domains to Geologic Terranes, ch.
 
 Lore / inspiration, not a source: Saelion Field · AND SO. Art: Redcore checkpoint stills from the house library.
 
-Redcore · github.com/stevoblevo/redcore · v0.5.0 · previous builds: v0.4.0 · v0.3.1 · v0.3.0 · v0.2.1 · Publish the fail if it fails.
+Redcore · github.com/stevoblevo/redcore · v0.6.0 · previous builds: v0.5.0 · v0.4.0 · v0.3.1 · v0.3.0 · v0.2.1 · Publish the fail if it fails.
 
 ## The North That Was (v0.4.0 adventure; lore + model, no measured data)
 Entered from the ↟ door in the room map or the Hearth ("Walk The North That Was"); deep links #north and #north=<station>. A journey along one glowing magnetic field line, following one brick's life. Tinder leads. Each station has a glyph: ∴ △ ↟ ▦ ◷ ∿ ⊙.
@@ -159,6 +159,15 @@ Entered from the ↟ door in the room map or the Hearth ("Walk The North That Wa
 6. ∿ The Reader: a scanner at standoff h; each spatial frequency k fades as exp(−2πkh) (synthetic source, model curve). Whether real bricks survive this is spectrum gate #3, UNMEASURED (issue #3).
 7. ⊙ The Ask: "You can help: photograph a face." Leads into the quest course (Room II).
 Side paths (unsealed by play): ≡ The Tablet (decorative wedge marks; lore, not a real inscription or translation; unsealed by stirring the pit), ✧ The Wanderer (Ash, Tinder's ash cousin; unsealed after centuries pass), § The Scroll (lore verse "The kiln forgets, the cooling chooses, the wall keeps, the reader asks."; unsealed after one scanner pass). Each holds a sigil; the hidden-sigil counter is now 8 (five in the rooms, three on side paths).
+
+## Scroll controls (v0.6.0)
+Setting: the ⇳ chip in the top bar switches scroll between guided (default) and free; saved as redcore.scroll. Free = plain native page scroll, no snapping and no page turns from the wheel. prefers-reduced-motion = instant snaps, no inertia.
+- Rooms: mouse wheel or trackpad (vertical or horizontal), touch swipe (up/down or left/right), ↓/↑, PageDown/PageUp, ←/→, Home/End all move room to room with an eased snap; tall rooms page through first. Tinder and Clinker hop to their perches. A slim field-line minimap on the right edge (glyphs ☉ ▦ ✎ Ⅲ ⌇ ⚖ ❧) shows where you are; click a glyph to jump.
+- The North That Was is a horizontal scroll: vertical mouse wheel travels along the field line, horizontal trackpad and touch swipes travel natively, and it snaps to the nearest station (a live marker rides the glyph track). Side paths: a vertical flick (touch, or trackpad vertical) or ↑/↓ at a station opens a nearby unsealed side path; flick back to return. PageUp/PageDown step stations.
+- Scroll drives play: at the Kiln a fast flick stokes the heat; at the Cooling scrolling lowers the temperature and the compass locks at 580 °C (lore illustration; the real remanence is acquired over a blocking-temperature range and records direction and intensity); at the Long Years scrolling scrubs the centuries; at the Reader scrolling raises and lowers the standoff h live on the exp(−2πkh) model trace. Each scrub passes through to travel at its end. Click/drag/slider alternatives remain.
+- The book: a horizontal swipe or horizontal trackpad scroll turns the page (at a branch it asks you to choose; it never picks for you); drag the page to curl it, it follows the finger or cursor and commits past halfway; ←/→ and PageUp/PageDown also turn. Vertical scroll stays native on the text and sinks the parallax planes.
+- Never trapped: the md reader, journey text cards and book text panels scroll natively.
+- Autoplay shows the cooling scrubbed by scroll; Read to me shows scrolling sinking the planes.
 
 ## The Brickmaker's Book (v0.5.0 storybook; lore + real facts, labelled)
 Entered from the ❦ door in the room map or the Hearth ("Open The Brickmaker's Book"); deep links #book and #book=<page>. A paper storybook opened inside the hearth: a cover that turns open, watercolor pages, and on every spread a three-plane parallax diorama that reacts to pointer, phone tilt and scroll (the text never moves). Each page labels its story text "lore" and its fact box "real" with a source. Branches: clay bed (river | red hill) → kiln night (still | storm) → where the bricks go (chapel | bridge | hearth): three endings that converge on "And so, you can help", which leads into the quest course. A bookmark ribbon remembers your page and path (localStorage redcore.book); a "Paths taken" map at the back inks the pages you have read. Three hidden marginalia sigils (red hill, storm, map). "▶ Read to me" turns the pages itself, walks every branch and all three endings with captions (optional spoken voice), about 75 s (about 94 s with reduced motion); click or Space pauses, Esc stops; it never writes saved progress.
