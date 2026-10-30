@@ -36,3 +36,9 @@ Distributed research. Pick an issue. Fail is a result.
 Bed-face optical archive in a laid wall. 3 V brick-body ReRAM. Petabyte-per-façade economics. PUF-as-crypto. Firebox storage. Stock mumax Relax as lab TRM. Fabric-as-write in the 12-grain RVE.
 
 Unofficial community mint: [COMMUNITY.md](COMMUNITY.md)
+
+## Data-collection site
+
+Static site in [`docs/`](docs/index.html) (GitHub Pages, branch `main`, folder `/docs`). Changelog: [CHANGELOG.md](CHANGELOG.md).
+
+<!-- Custom domain (not live yet): when saelion.co/redcore is ready, add docs/CNAME. Note a CNAME file maps a whole host, so a /redcore path comes from the saelion.co Pages site, not from a CNAME here. -->
