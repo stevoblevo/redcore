@@ -276,3 +276,19 @@ body.jopen{overflow:hidden}
 }
 @media (prefers-reduced-motion:reduce){.journey,.jp,.ghosthand{transition:opacity .2s!important}}
 .hud .snd{white-space:nowrap}
+/* v0.6.0 scroll nav */
+.scrollmode{all:unset;cursor:pointer;font-size:.72rem;padding:3px 8px;border-radius:99px;border:1px solid rgba(255,199,122,.35);color:var(--gold);white-space:nowrap}
+.scrollhint{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);z-index:72;padding:6px 14px;border-radius:99px;background:rgba(20,12,14,.94);border:1px solid rgba(255,199,122,.45);color:var(--gold);font-size:.8rem;pointer-events:none;opacity:0;transition:opacity .25s}
+.scrollhint.on{opacity:1}
+.minimap{position:fixed;right:8px;top:50%;transform:translateY(-50%);height:min(62vh,460px);width:28px;z-index:41}
+.minimap.off{display:none}.minimap .mml{position:absolute;left:9px;top:0;width:10px;height:100%;overflow:visible}
+.minimap .mml path{fill:none;stroke:rgba(255,59,47,.45);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.minimap .mmk{position:absolute;left:7px;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:radial-gradient(circle,#ffc77a,rgba(255,110,60,.2) 70%,transparent);box-shadow:0 0 12px #ff7a40;pointer-events:none;transition:top .12s linear}
+.minimap button{all:unset;cursor:pointer;position:absolute;left:0;width:28px;height:22px;margin-top:-11px;display:grid;place-items:center;font-size:.8rem;color:rgba(255,199,122,.45)}
+.minimap button.here,.minimap button:hover{color:#ffc77a;text-shadow:0 0 8px #ff7a40}
+.minimap button span{position:absolute;right:30px;white-space:nowrap;font-size:.72rem;padding:2px 8px;border-radius:99px;background:rgba(20,12,14,.9);opacity:0;transition:opacity .2s;pointer-events:none}
+.minimap button:hover span,.minimap button:focus-visible span{opacity:1}
+.jmk{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#ffc77a;box-shadow:0 0 12px #ff7a40;pointer-events:none;z-index:1}
+.journey{touch-action:none}.journey .jtext{touch-action:pan-y}
+.pet.hop,.clinker.hop{animation:perchhop .5s cubic-bezier(.3,1.6,.4,1)}@keyframes perchhop{40%{margin-top:-18px}}
+@media (max-width:760px){.minimap{right:2px;width:22px}.minimap button{width:22px}.scrollmode{font-size:.66rem;padding:3px 6px}}

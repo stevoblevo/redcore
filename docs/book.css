@@ -128,3 +128,6 @@ body.bopen .bubble{background:#fbf7ec;color:#26323f;border-color:#26323f;font-fa
 body.bopen .clinker{filter:none}body.bopen .clinker .lump{fill:rgba(38,50,63,.22);stroke:#26323f;stroke-width:2;filter:url(#sb-ink)}
 @media (max-width:760px){.trust i{width:22px}.cmode{font-size:0;padding:3px 6px}.cmode::first-letter{font-size:.8rem}.clinker{width:40px;height:40px}}
 @media (prefers-reduced-motion:reduce){.clinker .crack,.clinker .ceyes path{animation:none}.clinker.called{animation:none}}
+/* v0.6.0 scroll/curl */
+.bk-spread{touch-action:pan-y}.bk-leaf.curl{will-change:transform}
+.bk-choice.pulse{animation:bkpulse .7s ease 2}@keyframes bkpulse{50%{box-shadow:0 0 0 4px rgba(184,50,95,.35)}}

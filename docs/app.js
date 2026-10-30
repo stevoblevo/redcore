@@ -1,4 +1,4 @@
-/* Redcore · Brickmark v0.5.0 — lay the course. Vanilla, no build. */
+/* Redcore · Brickmark v0.6.0 — lay the course. Vanilla, no build. */
 (function(){
 'use strict';
 var $=function(s,r){return (r||document).querySelector(s);},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
@@ -279,7 +279,7 @@ var ST=[ /* id, x, y, glyph, branch?  — world coords in screens */
  {id:'scroll',x:5.5,y:1,g:'§',n:'The Scroll',br:1},
  {id:'ask',x:6,y:0,g:'⊙',n:'The Ask'}];
 var SIX={};ST.forEach(function(s,i){SIX[s.id]=i;});
-var revealed={},visited={};
+var revealed={},visited={},camTok=0;
 var AP={on:false,paused:false};
 /* pausable tween: f(p) for p 0..1 over ms; time only advances while autoplay is not paused */
 function tween(ms,f,done){var t=0,last=performance.now();if(RM)ms*=1.15;
@@ -305,7 +305,7 @@ function goSt(i,quiet){i=Math.max(0,Math.min(ST.length-1,i));var s=ST[i],prev=jC
   $$('.jn',trk).forEach(function(b,k){b.classList.toggle('here',k===i);b.classList.toggle('seen',!!visited[ST[k].id]);});
   camTX=s.x;camTY=s.y;var fx=camX,fy=camY;
   if(RM){J.classList.add('fade');setTimeout(function(){camX=camTX;camY=camTY;place();J.classList.remove('fade');perch=null;},260);}
-  else tween(1100,function(p){var e=ease(p);camX=fx+(camTX-fx)*e;camY=fy+(camTY-fy)*e;place();},function(){perch=null;});
+  else{var tok=++camTok;tween(1100,function(p){if(tok!==camTok)return;var e=ease(p);camX=fx+(camTX-fx)*e;camY=fy+(camTY-fy)*e;place();},function(){perch=null;});}
   perch=null;var on=SON[s.id];if(on)on();
   if(!quiet&&!AP.on)say(TL[s.id]);
   $('#jprev').disabled=i===0;$('#jnext').disabled=i===ST.length-1;
@@ -458,6 +458,15 @@ $('#sg-scroll').addEventListener('click',function(){takeSigil(7,'§ The scroll s
 /* Ask */
 $('#ask-go').addEventListener('click',function(){closeJ('#course');setTimeout(function(){say('Brick one: Ward. Then twenty faces. Your course starts here. ▦',5000);},600);});
 SON.reader=function(){rX=0;};SON.years=function(){};
+/* v0.6.0 scroll bridge: scroll.js drives travel and the scrubs through these */
+window.__rcJ={open:function(){return jOpen;},ST:ST,SIX:SIX,cur:function(){return jCur;},revealed:function(){return revealed;},goSt:goSt,nextMain:nextMain,
+ cam:function(){return [camX,camY];},setCam:function(x,y){camTok++;camX=camTX=x;if(y!==undefined)camY=camTY=y;place();},
+ cool:function(){return cT;},setCool:function(T){T=Math.max(20,Math.min(1050,T));if(T>cT+1)cG.reset(T);setCool(T);if(T<580&&!locked&&cT<580){comp.style.transform='';var c=$('#cv-cool').getBoundingClientRect(),r=comp.getBoundingClientRect();comp.style.transform='translate('+(c.left+c.width/2-r.left-r.width/2)+'px,'+(c.top+c.height/2-r.top-r.height/2)+'px)';lockTry();}},
+ locked:function(){return locked;},
+ years:function(){return [yT,+yr.max];},setYears:function(v){yT=Math.max(0,Math.min(+yr.max,v));yr.value=yT;yPlay=false;$('#years-go').textContent='▶ play';},
+ h:function(){return [+rh.value,+rh.min,+rh.max];},setH:function(v){rh.value=Math.max(+rh.min,Math.min(+rh.max,v));},
+ kiln:function(){return kT;},stoke:function(d){kT=Math.min(1050,Math.max(kT,20)+d);},
+ ap:function(){return AP.on;},say:say,reperch:function(){perch=null;}};
 /* doors + hearth entry */
 northHash();
 
@@ -477,7 +486,7 @@ var STEPS=[
  {d:4200,c:'1 · The Clay Pit. Wet clay, grains pointing every which way. I\'ll stir… chaos.',f:function(){goSt(SIX.pit,1);setTimeout(function(){demoStir(3200);},300);}},
  {d:3600,c:'A side path opens: The Tablet. Wedges pressed in clay (lore). The sigil waits for your own tap.',f:function(){reveal('tablet');goSt(SIX.tablet,1);}},
  {d:4200,c:'2 · The Kiln. Up to 1050 °C. Hot enough that every grain shivers free.',f:function(){goSt(SIX.kiln,1);bel=1;tween(3400,function(){},function(){bel=0;kT=1050;});}},
- {d:4600,c:'3 · The Cooling. Past 675 °C the hematite settles; past 580 °C the magnetite locks.',f:function(){goSt(SIX.cool,1);cG.reset(1050);setCool(1050);tween(3800,function(p){setCool(1050-1000*p);});}},
+ {d:4600,c:'3 · The Cooling, scrubbed by scroll: past 675 °C the hematite settles; at 580 °C the magnetite locks the compass.',f:function(){goSt(SIX.cool,1);cG.reset(1050);setCool(1050);if(window.__scroll)window.__scroll.hint('⇣ scroll scrubs the cooling',3800);tween(3800,function(p){window.__rcJ.setCool(1050-1000*p);});}},
  {d:2800,c:'Drag the compass to the brick… locked. That is the north that was.',f:function(){demoCompass(1600);}},
  {d:2600,c:'4 · The Course. One brick: one noisy arrow.',f:function(){goSt(SIX.course,1);courseShow(false);}},
  {d:3400,c:'Lay its neighbours. The identity is the course pattern, not the single brick (if measurement earns it).',f:function(){courseShow(true);}},
