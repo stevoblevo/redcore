@@ -1,6 +1,9 @@
 # Changelog
 
 - **v0.1.0** — 2026-10-29 — First data-collection site in `/docs` (checklist with saved progress, photo-name helper, prefilled issue submit) + `data-submission` issue template.
+## v0.3.0 — 2026-10-29
+- Site becomes a game: Tinder the kiln sprite (follows, blinks, throwable, speaks, leads with a compass-needle tail); the checklist is now ten sigil bricks fired (675 → 580 °C) and laid into a running-bond course (localStorage, migrates v0.2.1 progress); Uruk wedge tally; magnetic-north compass HUD; six rooms (Hearth, Course, Namer's Bench, Three Pillars, Gate #3, Assay); five hidden ✶ sigils; optional 31-EDO plucks; "Deliver to the assay" opens the prefilled issue; Redcore checkpoint art in docs/assets; v0.2.1 kept at docs/v0.2.1/.
+
 ## v0.2.1 — 2026-10-29
 - Site: magnetite Curie ≈580 °C / hematite Néel ≈675 °C now cited to Dunlop & Özdemir (1997) and Butler (1992); saelion.co/field kept only as a lore link, not a source; added Sources list.
 

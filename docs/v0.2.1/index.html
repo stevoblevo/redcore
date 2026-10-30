@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redcore · Brickmark — the brick remembers</title>
+<meta name="description" content="How to collect the data the Brickmark provenance assay needs, and how to submit it.">
+<meta name="theme-color" content="#0b0a0c">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="kiln" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Redcore · Brickmark · <span class="ver">v0.2.1</span></p>
+    <h1>The brick remembers<br><span class="red">where north was.</span></h1>
+    <p class="lede">As fired clay cools in the kiln, its magnetite locks a record of Earth's field (magnetite Curie temperature ≈580&nbsp;°C; hematite Néel temperature ≈675&nbsp;°C<sup><a href="#src-1">1</a>,<a href="#src-2">2</a></sup>). Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another. <strong>Help us find out with a phone and twenty bricks.</strong></p>
+    <nav class="jump">
+      <a href="#what">What it is</a><a href="#exp0">Checklist</a><a href="#namer">Photo namer</a><a href="#specs">Specs</a><a href="#gate">Spectrum gate</a><a href="#submit" class="cta">Submit data</a>
+    </nav>
+    <p class="scrollcue" aria-hidden="true">scroll · descend into the kiln</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card warn reveal">
+    <h2>Read before quoting numbers</h2>
+    <p>The v4 figures — <strong>87 independent cells</strong> and <strong>63 extractable bits</strong> per face — are <span class="tag model">MODEL ONLY</span> outputs of a simulation run, <em>not measured</em>. Do not publish a bits-per-brick number as an empirical claim until the spectrum gate (issue #3) is run.</p>
+  </section>
+
+  <section id="what" class="card reveal">
+    <p class="kicker">Chapter 1 · The assay</p>
+    <h2>What Brickmark is</h2>
+    <div class="trio">
+      <article><h3>A provenance assay</h3><p>A magnetic provenance assay for fired clay. <strong>Batch provenance first</strong>; spatial, unit or course identity only if repeatability survives measurement.</p></article>
+      <article><h3>Not a PUF</h3><p>No PUF-as-crypto, no bed-face archive in a laid wall, no security language until repeatability is proven. The struck v1 claims stay dead.</p></article>
+      <article><h3>The course is the unit</h3><p>The identity unit may be the <strong>course of bricks</strong>, not a single brick: aggregate four to eight bricks for a usable identity length, if measured course BER earns it.</p></article>
+    </div>
+    <p class="src">docs/SAELION_REALITY_PROGRAM.md §1, §2.2, WP4 · briefs/v3.md</p>
+    <div class="course" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </section>
+
+  <section id="exp0" class="card reveal">
+    <p class="kicker">Chapter 2 · Your part</p>
+    <div class="head"><h2>Experiment 0 — photograph clay faces</h2><span class="tag">$0 · a phone</span></div>
+    <p class="muted">Optical unit identity. Complementary to the magnetic Afternoon Zero, not a replacement. Source: <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_optical.md">experiment0_optical.md</a>, <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_ingest.md">experiment0_ingest.md</a>.</p>
+    <div class="progress"><div class="bar" id="bar"></div><span id="pct">0 / 0</span></div>
+    <ol class="checklist" id="checklist">
+      <li><label><input type="checkbox" data-k="safety"> Safety: bricks are 2–3 kg. No glass table. Nothing goes in a fireplace.</label></li>
+      <li><label><input type="checkbox" data-k="lots"> Pick lots: Lot A = one stack / one store; Lot B = another if you can get it. Two lots make impostors honest.</label></li>
+      <li><label><input type="checkbox" data-k="label"> Pencil the ID (e.g. <code>A-01</code>) on the <strong>end</strong>, not the scan face.</label></li>
+      <li><label><input type="checkbox" data-k="light"> Window light or shade. No flash if it blows the clay white.</label></li>
+      <li><label><input type="checkbox" data-k="r1"> Photograph twenty fired-clay faces — capture 1 (<code>_r1</code>). Fill the frame with clay texture, not room.</label></li>
+      <li><label><input type="checkbox" data-k="r2"> Capture 2 (<code>_r2</code>) of every face — different lighting, day or operator if you can. Same phone is fine. Don't rotate 90° between reps unless you record it.</label></li>
+      <li><label><input type="checkbox" data-k="crop"> Crop about 5 × 5 cm of the same region. Don't invent a crop box — only pass <code>--crop-box</code> if you measured one.</label></li>
+      <li><label><input type="checkbox" data-k="name"> Name every file <code>{lot}-{nn}_r{rep}.jpg</code> — use the namer below.</label></li>
+      <li><label><input type="checkbox" data-k="ingest"> Optional: <code>python protocol/optical_unit_identity.py --ingest path/to/A-01_r1.jpg</code> (hash receipt, no EER).</label></li>
+      <li><label><input type="checkbox" data-k="submit"> Submit: open the prefilled issue below and attach your zip.</label></li>
+    </ol>
+    <button class="ghost" id="reset">Reset checklist</button>
+  </section>
+
+  <section id="namer" class="card reveal">
+    <div class="head"><h2>Photo-name helper</h2><span class="tag">pattern {lot}-{nn}_r{rep}.jpg</span></div>
+    <div class="grid3">
+      <label>Lot<select id="lot"><option>A</option><option>B</option></select></label>
+      <label>Face # (1–20)<input id="nn" type="number" min="1" max="20" value="1"></label>
+      <label>Capture<select id="rep"><option value="1">r1</option><option value="2">r2</option></select></label>
+    </div>
+    <div class="out"><code id="fname">A-01_r1.jpg</code><button id="copy">Copy</button></div>
+    <details><summary>Show the full shot list for this lot</summary><pre id="shotlist"></pre></details>
+  </section>
+
+  <section id="specs" class="card reveal">
+    <p class="kicker">Chapter 3 · The numbers</p>
+    <h2>Magnetic specs — three separate things</h2>
+    <p class="muted">These are different specs. Do not merge them. Values are quoted from the repo only.</p>
+    <div class="specs">
+      <article><h3>1 · Scan pitch</h3><p>Spectrum gate (issue #3): scan a defined patch at <strong>0.25–0.5 mm pitch</strong>.</p><p class="src">issue #3 · docs/SAELION_REALITY_PROGRAM.md</p></article>
+      <article><h3>2 · Standoff (height) tolerance</h3><p>Derived jig spec: standoff repeatability <strong>≤ 0.2 mm</strong> (alongside lateral ≤ 0.25 mm, σ<sub>B</sub>/n ≥ 10).</p><p class="src">briefs/v4.md · briefs/v3.md</p></article>
+      <article><h3>3 · v4 error budget <span class="tag model">MODEL ONLY</span></h3><p>0.25 mm lateral, 0.1 mm standoff, σ<sub>B</sub>/n = 10, BER ~5% (executed run: BER 6.12%, 63 bits; 87 cells at 3 mm cell pitch, 1 mm standoff).</p><p class="src">briefs/v4.md · cuda/results/ASSAY_v4_run.md</p></article>
+    </div>
+  </section>
+
+  <section id="gate" class="card reveal">
+    <div class="head"><h2>Spectrum gate #3</h2><span class="tag model">UNMEASURED</span></div>
+    <p>Model: grain-scale magnetization is roughly uncorrelated, so the field at standoff <em>h</em> is that source upward-continued, multiplied in the Fourier domain by <code>exp(−2πkh)</code>. Standoff is the low-pass filter; cutoff wavelength ≈ 2π<em>h</em>.</p>
+    <p>The gate: on one strong face, scan at 0.25–0.5 mm pitch, repeat at 0.5 / 1 / 2 / 5 mm standoff, and compare measured B-maps' height attenuation against <code>exp(−2πkh)</code>. If the measured spectrum is much redder, the unit assay may be dead.</p>
+    <figure class="plot">
+      <canvas id="decay" width="900" height="360" aria-label="Plot of exp(-2 pi k h) against standoff h"></canvas>
+      <figcaption>
+        <label>Spatial frequency <em>k</em> = <output id="kout">0.50</output> cycles/mm (wavelength <output id="lout">2.00</output> mm)<input id="k" type="range" min="0.05" max="2" step="0.01" value="0.5"></label>
+        <span class="muted">Curve is the model <code>exp(−2πkh)</code> only, with no data. Dots mark the gate's four standoffs. Slider is illustrative, not a measured spectrum.</span>
+      </figcaption>
+    </figure>
+    <p class="muted">Controls: empty-jig scan, same scan twice without remount, scan after remount, magnetic-sheet control. A phone photo is <em>not</em> a B-map and does not touch this gate. <a href="https://github.com/stevoblevo/redcore/issues/3">Issue #3 →</a></p>
+    <p class="src">briefs/v4.md §1 · briefs/v3.md · docs/SAELION_REALITY_PROGRAM.md · cuda/python/postprocess.py</p>
+  </section>
+
+  <section id="submit" class="card reveal submit">
+    <h2>Submit your data</h2>
+    <p>Fill in what you have, then open a prefilled GitHub issue. Drag your zip of photos into the issue before posting. No git needed.</p>
+    <div class="grid3">
+      <label>Lots<input id="s_lots" placeholder="A (HD RED0126), B (used)"></label>
+      <label>Faces photographed<input id="s_faces" type="number" min="0" max="40" placeholder="20"></label>
+      <label>Lighting / reps<input id="s_light" placeholder="r1 window, r2 shade next day"></label>
+    </div>
+    <label class="full">Notes (weathered, painted, fails…)<textarea id="s_notes" rows="3"></textarea></label>
+    <a id="submitLink" class="cta big" target="_blank" rel="noopener" href="https://github.com/stevoblevo/redcore/issues/new?template=data-submission.md">Open prefilled issue →</a>
+    <p class="muted">Prefer the existing thread? Attach the zip on <a href="https://github.com/stevoblevo/redcore/issues/11">issue #11</a>.</p>
+  </section>
+</main>
+<section class="wrap sources" id="sources"><h2>Sources</h2><ol>
+<li id="src-1">Dunlop, D. J. &amp; Özdemir, Ö. (1997). <em>Rock Magnetism: Fundamentals and Frontiers</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511612794">doi:10.1017/CBO9780511612794</a></li>
+<li id="src-2">Butler, R. F. (1992). <em>Paleomagnetism: Magnetic Domains to Geologic Terranes</em>, ch. 2 “Ferromagnetic Minerals”. Blackwell Scientific (electronic edition 1998).</li>
+</ol><p class="src">Lore / inspiration, not a source: <a href="https://saelion.co/field">Saelion Field</a></p></section>
+<footer class="wrap"><p>Redcore · <a href="https://github.com/stevoblevo/redcore">github.com/stevoblevo/redcore</a> · <a href="https://github.com/stevoblevo/redcore/blob/main/CHANGELOG.md">v0.2.1</a> · archived build · <a href="../">play v0.3.0 →</a> · Publish the fail if it fails.</p></footer>
+<script src="app.js"></script>
+</body>
+</html>
