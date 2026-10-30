@@ -95,10 +95,10 @@ var T=null;
 function tStart(e){if(e.touches.length!==1){T=null;return;}var t=e.touches[0];T={x:t.clientX,y:t.clientY,lx:t.clientX,ly:t.clientY,t:Date.now(),ax:null,el:e.target};}
 function tMove(e){if(!T)return;var t=e.touches[0],dx=t.clientX-T.x,dy=t.clientY-T.y;if(!T.ax&&Math.hypot(dx,dy)>10)T.ax=Math.abs(dx)>Math.abs(dy)?'x':'y';
  if(journeyOpen()&&T.ax&&!T.el.closest('canvas.jc,input,#jcomp,button')){var ndir=T.ax==='x'?(T.lx-t.clientX>0?1:-1):(T.ly-t.clientY>0?1:-1);
-  if(!nativeScroll(T.el,T.ax,ndir,$('#north'))){if(e.cancelable)e.preventDefault();if(T.ax==='x')travel(T.lx-t.clientX);else{var id=stId();if(onMain()&&SCRUB[id])scrub(id,(T.ly-t.clientY)*1.6);}}}
+  if(nativeScroll(T.el,T.ax,ndir,$('#north')))T.nat=true;else{if(e.cancelable)e.preventDefault();if(T.ax==='x')travel(T.lx-t.clientX);else{var id=stId();if(onMain()&&SCRUB[id])scrub(id,(T.ly-t.clientY)*1.6);}}}
  T.lx=t.clientX;T.ly=t.clientY;}
 function tEnd(){if(!T)return;var dx=T.lx-T.x,dy=T.ly-T.y,dt=Date.now()-T.t,tt=T;T=null;if(!tt.ax)return;var fast=dt<450;
- if(journeyOpen()){if(tt.el.closest('canvas.jc,input,#jcomp,button'))return;if(tt.ax==='y'&&fast&&Math.abs(dy)>50){var id=stId();if(id==='kiln'&&onMain()){J().stoke(Math.min(220,Math.abs(dy)*1.2));hint('a fast flick stokes the kiln · '+Math.round(J().kiln())+' °C',900);window.__stoke={t:J().kiln()};return;}
+ if(journeyOpen()){if(tt.nat||tt.el.closest('canvas.jc,input,#jcomp,button'))return;if(tt.ax==='y'&&fast&&Math.abs(dy)>50){var id=stId();if(id==='kiln'&&onMain()){J().stoke(Math.min(220,Math.abs(dy)*1.2));hint('a fast flick stokes the kiln · '+Math.round(J().kiln())+' °C',900);window.__stoke={t:J().kiln()};return;}
    if(!(onMain()&&SCRUB[id]&&!atEdge(id,-dy)))sidePath(dy<0?-1:1);}return;}
  if(bookOpen()){if(tt.ax==='x'&&Math.abs(dx)>60)return;/* the curl handles it */return;}
  if(readerOpen())return;

@@ -304,7 +304,7 @@ function goSt(i,quiet){i=Math.max(0,Math.min(ST.length-1,i));var s=ST[i],prev=jC
   $$('.jp',jw).forEach(function(p){p.classList.toggle('cur',p.dataset.s===s.id);});
   $$('.jn',trk).forEach(function(b,k){b.classList.toggle('here',k===i);b.classList.toggle('seen',!!visited[ST[k].id]);});
   camTX=s.x;camTY=s.y;var fx=camX,fy=camY;
-  if(RM){J.classList.add('fade');setTimeout(function(){camX=camTX;camY=camTY;place();J.classList.remove('fade');perch=null;},260);}
+  if(RM){var tk=++camTok;J.classList.add('fade');setTimeout(function(){J.classList.remove('fade');if(tk!==camTok)return;camX=camTX;camY=camTY;place();perch=null;},260);}
   else{var tok=++camTok;tween(1100,function(p){if(tok!==camTok)return;var e=ease(p);camX=fx+(camTX-fx)*e;camY=fy+(camTY-fy)*e;place();},function(){perch=null;});}
   perch=null;var on=SON[s.id];if(on)on();
   if(!quiet&&!AP.on)say(TL[s.id]);
