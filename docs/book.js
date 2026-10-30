@@ -227,7 +227,7 @@ var RSTEPS=[
  ['river','First path: the river bend. Real: clay carries magnetite and hematite grains, pointing every which way.'],
  ['kiln','Into the kiln. On the way down, as it cools, a record sets.'],
  ['still','A still night. Real: hematite acquires remanence over a range of blocking temperatures, up to about 675 °C.'],
- ['cool','The cooling. Real: over the blocking range, the remanence records the field's direction and intensity, the north that was. (Watch: scrolling sinks the three planes; the text stays still.)'],
+ ['cool','The cooling. Real: over the blocking range, the remanence records the field\'s direction and intensity, the north that was. (Watch: scrolling sinks the three planes; the text stays still.)'],
  ['travel','Where do the bricks go? A chapel, a bridge, or a hearth.'],
  ['chapel','Ending one: the chapel wall. Real: for the magnetic assay the course may be the identity, magnetic bits across four to eight bricks, if measured course BER earns it.'],
  ['help','And so, you can help.'],
