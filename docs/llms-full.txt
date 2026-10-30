@@ -147,7 +147,7 @@ Butler, R. F. (1992). Paleomagnetism: Magnetic Domains to Geologic Terranes, ch.
 
 Lore / inspiration, not a source: Saelion Field · AND SO. Art: Redcore checkpoint stills from the house library.
 
-Redcore · github.com/stevoblevo/redcore · v0.4.0 · previous builds: v0.3.1 · v0.3.0 · v0.2.1 · Publish the fail if it fails.
+Redcore · github.com/stevoblevo/redcore · v0.5.0 · previous builds: v0.4.0 · v0.3.1 · v0.3.0 · v0.2.1 · Publish the fail if it fails.
 
 ## The North That Was (v0.4.0 adventure; lore + model, no measured data)
 Entered from the ↟ door in the room map or the Hearth ("Walk The North That Was"); deep links #north and #north=<station>. A journey along one glowing magnetic field line, following one brick's life. Tinder leads. Each station has a glyph: ∴ △ ↟ ▦ ◷ ∿ ⊙.
@@ -159,6 +159,79 @@ Entered from the ↟ door in the room map or the Hearth ("Walk The North That Wa
 6. ∿ The Reader: a scanner at standoff h; each spatial frequency k fades as exp(−2πkh) (synthetic source, model curve). Whether real bricks survive this is spectrum gate #3, UNMEASURED (issue #3).
 7. ⊙ The Ask: "You can help: photograph a face." Leads into the quest course (Room II).
 Side paths (unsealed by play): ≡ The Tablet (decorative wedge marks; lore, not a real inscription or translation; unsealed by stirring the pit), ✧ The Wanderer (Ash, Tinder's ash cousin; unsealed after centuries pass), § The Scroll (lore verse "The kiln forgets, the cooling chooses, the wall keeps, the reader asks."; unsealed after one scanner pass). Each holds a sigil; the hidden-sigil counter is now 8 (five in the rooms, three on side paths).
+
+## The Brickmaker's Book (v0.5.0 storybook; lore + real facts, labelled)
+Entered from the ❦ door in the room map or the Hearth ("Open The Brickmaker's Book"); deep links #book and #book=<page>. A paper storybook opened inside the hearth: a cover that turns open, watercolor pages, and on every spread a three-plane parallax diorama that reacts to pointer, phone tilt and scroll (the text never moves). Each page labels its story text "lore" and its fact box "real" with a source. Branches: clay bed (river | red hill) → kiln night (still | storm) → where the bricks go (chapel | bridge | hearth): three endings that converge on "And so, you can help", which leads into the quest course. A bookmark ribbon remembers your page and path (localStorage redcore.book); a "Paths taken" map at the back inks the pages you have read. Three hidden marginalia sigils (red hill, storm, map). "▶ Read to me" turns the pages itself, walks every branch and all three endings with captions (optional spoken voice), about 75 s (about 94 s with reduced motion); click or Space pauses, Esc stops; it never writes saved progress.
+
+### Page 1 · The brickmaker wakes (#book=town)
+Lore: In an old town of chimneys and slow bells, a brickmaker wakes before dawn. Today she fires a batch. First, she needs clay, and there are two beds she trusts.
+Real: Brickmark is a magnetic provenance assay for fired clay: batch provenance first. It is not a PUF and makes no security claims. (Source: docs/SAELION_REALITY_PROGRAM.md §1, §2.2)
+Choices: Dig at the river bend → river | Cut from the red hill → hill
+
+### Page 2 · The river bend (#book=river)
+Lore: She kneels where the river slows and lifts out clay as grey as rain. She wedges it on the bench, folding the air out, until it is smooth as a held breath.
+Real: Clay carries tiny iron-oxide grains, among them magnetite and hematite. Wet and stirred, they point every which way: nothing in the pit knows north. (Source: Dunlop & Özdemir (1997); Butler (1992) [1,2])
+Choices: Carry the green bricks to the kiln → kiln
+
+### Page 2 · The red hill (#book=hill)
+Lore: She climbs the red hill and cuts a face of clay so iron-bright it stains her hands. She presses each brick into the mould and leaves, by habit, one thumbprint in the margin of her ledger.
+Real: Bricks from one clay bed and one firing form a batch. Telling batches apart comes first; telling one brick or one course apart only if repeatability survives measurement. (Source: docs/SAELION_REALITY_PROGRAM.md §1, WP4)
+Choices: Carry the green bricks to the kiln → kiln
+Hidden marginalia sigil on this page.
+
+### Page 3 · Into the kiln (#book=kiln)
+Lore: She stacks the green bricks with gaps for the fire to breathe, seals the door with mud, and lights it. The kiln will burn all night. Which night will it be?
+Real: Fired hot enough, the grains' magnetic order is shaken loose. It is on the way down, as the brick cools, that a record sets. (Source: Dunlop & Özdemir (1997); Butler (1992) [1,2])
+Choices: A still night, every star out → still | A storm night, rain on the roof → storm
+
+### Page 4 · A still night (#book=still)
+Lore: No wind. The stars come out one by one and the kiln glows like a small sun. Toward morning she lets the fire die and the long cooling begins.
+Real: As it cools, hematite settles below its Néel temperature, ≈675 °C. (Source: Dunlop & Özdemir (1997); Butler (1992) [1,2])
+Choices: Wait for the cooling → cool
+
+### Page 4 · A storm night (#book=storm)
+Lore: Rain hisses on the kiln roof all night. A moth comes in out of the weather and sits by her lamp. (The story makes no claim that the storm changed the bricks.)
+Real: Below its Curie temperature, ≈580 °C, magnetite locks. (Source: Dunlop & Özdemir (1997); Butler (1992) [1,2])
+Choices: Wait for the cooling → cool
+Hidden marginalia sigil on this page.
+
+### Page 5 · The cooling (#book=cool)
+Lore: At dawn she opens the door. The bricks tick softly as they cool, and in each one, too small to see, something has quietly made up its mind.
+Real: Grains lock to the field while cooling. They freeze in a slight preference for Earth's field at that moment: the north that was. Bricks fired in one kiln share roughly the same north. (Source: Dunlop & Özdemir (1997); Butler (1992) [1,2] · site: The North That Was)
+Choices: Load the cart → travel
+
+### Page 6 · Where the bricks go (#book=travel)
+Lore: A carter comes up the road with an empty cart and three orders in his coat: one from the chapel, one from the bridge-builders, one from a family who want a new hearth. Which will you follow?
+Real: Once laid, the north a brick holds stays put while the wall weathers. On this site that is a model assumption, not a measurement. (Source: site: The North That Was, station 5)
+Choices: To the chapel → chapel | To the bridge → bridge | To a family's hearth → hearth
+
+### Ending I · The chapel wall (#book=chapel)
+Lore: The masons lay her bricks in courses, each row offset by half a brick. One brick alone says very little. Together, row on row, they hold a pattern no single brick could.
+Real: The course is the identity. Brickmark's identity unit may be the course: aggregate four to eight bricks for a usable identity length, if measured course BER earns it. (Source: docs/SAELION_REALITY_PROGRAM.md §2.2)
+Choices: And so… → help
+
+### Ending II · The bridge (#book=bridge)
+Lore: The bridge stands for centuries. One day a surveyor comes with a scanner and holds it a hand's breadth off the stone, then closer, then closer still, listening for the north that was.
+Real: The scanner reads at a standoff. The field signal fades with distance as exp(−2πkh) (model). Standoff repeatability ≤ 0.2 mm is a derived jig spec. Spectrum gate #3 is UNMEASURED: repeat at 0.5 / 1 / 2 / 5 mm. (Source: issue #3 · site: Three Pillars, Gate #3)
+Choices: And so… → help
+
+### Ending III · A family's hearth (#book=hearth)
+Lore: Her bricks become a hearth. Years later, a child kneels by the fire with a phone, and carefully, in good light, photographs one brick's face, then the next.
+Real: The photo you take matters. Experiment 0 collects phone photos of twenty clay faces, each named {lot}-{nn}_r{rep}.jpg, submitted as a GitHub issue. (Source: protocol/experiment0_optical.md · .github/ISSUE_TEMPLATE/data-submission.md)
+Choices: And so… → help
+
+### Page 8 · And so, you can help (#book=help)
+Lore: Every path in this book ends the same way: with someone who looks closely. The brickmaker is long gone. The north that was is still in the wall. The next page is yours.
+Real: The real course: ten quests. Start with safety, choose lots, then photograph twenty faces and deliver them to the assay as a data-submission issue. (Source: site: the Course · protocol/experiment0_optical.md)
+Choices: Begin the course ▦ → #course | See the paths taken → map | Read another ending → travel
+
+### Page 9 · Paths taken (#book=map)
+Lore: Pressed into the back of the book, a map of every path. The ones you have walked are inked; the rest are still in pencil.
+Choices: Begin the course ▦ → #course | Start again from page one → town
+Hidden marginalia sigil on this page.
+
+## Clinker, Tinder's rival (v0.5.0; a game layer, lore only)
+Clinker is a lump of kiln clinker with an obsidian sheen and smouldering crack-eyes, a deadpan trickster. Tinder and Clinker both offer advice at the book's branch pages ("which path hides marginalia") and at some journey stations ("is there a side path here"). Tinder never lies but is sometimes wrong by enthusiasm; Clinker sometimes bluffs. Bluffs ONLY ever concern these playful game/lore questions. Anything Clinker says about real science, specs, filenames or submitting is true and flagged "✓ true"; in the rooms (Hearth, Course, Bench, Pillars, Gate #3, Assay, Plate Library) Clinker makes no claims at all. Trust meters (top bar, one per pet, 0–100, start 50): following a pet's advice moves its trust +10 if right, −10 if wrong. "⚑ Call the bluff" (in Clinker's bubble, or tap Clinker while his claim is live): catching a lie earns the bluff sigil and costs Clinker 5 trust; calling an honest claim gives him +5. Clinker has his own Follow / Perch / Nap mode (top-bar ◆ chip, saved as redcore.clinkermode). Autoplay and Read to me each show one bluff being called, as a demo that saves nothing. The hidden-sigil counter is now 12 (five rooms, three side paths, three marginalia, one bluff).
 
 ## Autoplay (v0.4.0)
 A ▶ toggle in the top bar, on the Hearth, and in the adventure, or the deep link #autoplay. It visits every room, opens one repo doc in the tablet reader, then walks every station and side path, demoing the stir, firing, cooling, compass lock, laying the course, the time-lapse and the scanner, with Tinder's captions and a progress bar; it ends at The Ask (about 73 s). Click or Space pauses/resumes, Esc stops, ⏭ skips a step. It never writes saved quest progress or sigils.

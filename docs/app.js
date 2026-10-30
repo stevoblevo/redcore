@@ -1,4 +1,4 @@
-/* Redcore · Brickmark v0.4.0 — lay the course. Vanilla, no build. */
+/* Redcore · Brickmark v0.5.0 — lay the course. Vanilla, no build. */
 (function(){
 'use strict';
 var $=function(s,r){return (r||document).querySelector(s);},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
@@ -107,7 +107,7 @@ function closeMenu(){menu.hidden=true;}
 $$('button',menu).forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();if(b.dataset.m===mode){closeMenu();say(MLINE[mode]);}else setMode(b.dataset.m);});});
 addEventListener('pointerdown',function(e){if(!menu.hidden&&!menu.contains(e.target)&&!pet.contains(e.target))closeMenu();});
 addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
-function perchSpot(){if(jOpen){var jh=$('.jp.cur .jh'),jr=jh&&jh.getBoundingClientRect(),Wd=innerWidth;return [Wd-(Wd<760?66:96),Math.max(64,Math.min(innerHeight-200,jr?jr.top-8:innerHeight*.3))];}
+function perchSpot(){if(window.__book&&window.__book.open)return window.__book.perch();if(jOpen){var jh=$('.jp.cur .jh'),jr=jh&&jh.getBoundingClientRect(),Wd=innerWidth;return [Wd-(Wd<760?66:96),Math.max(64,Math.min(innerHeight-200,jr?jr.top-8:innerHeight*.3))];}
   var room=$('#'+curRoom),W=innerWidth,H=innerHeight,side=W-(W<760?66:96),y=H*.3;
   var nq=$$('.quest',ql)[nextQ()],qr=nq&&nq.getBoundingClientRect();
   if(curRoom==='course'&&qr&&qr.top>70&&qr.bottom<H-60)y=qr.top+qr.height/2-32;
@@ -146,7 +146,7 @@ function go(h){var el=$(h);if(el)el.scrollIntoView({behavior:RM?'auto':'smooth'}
 /* ---------- rooms ---------- */
 var LINES={hearth:'Hi! I\'m Tinder, born in a kiln. Drag me, throw me, tap me for hints.',course:'Each quest is a brick. Fire all ten and we\'ve got a course.',bench:'The Bench stamps names. Tap the tablet to copy one.',pillars:'Three pillars. Merge them and the roof falls in. Literally.',gate:'Gate #3 is unmeasured. This curve is a model, not a promise.',assay:'This is it. Label the course, then deliver it.',sources:'The Plate Library. Real books live here.'},seen={};
 var rooms=$$('.room');
-if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');var id=en.target.id;if(id!==curRoom){curRoom=id;perch=null;}
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');var id=en.target.id;if(id!==curRoom){curRoom=id;perch=null;}try{window.dispatchEvent(new CustomEvent('rc:room',{detail:id}));}catch(e){}
   $$('.doors a').forEach(function(a){a.classList.toggle('here',a.dataset.room===id);});
   if(!seen[id]&&!(AP&&AP.on)){seen[id]=1;setTimeout(function(){say(LINES[id]||'');},500);}}});},{threshold:.35});rooms.forEach(function(r){io.observe(r);});}
 else rooms.forEach(function(r){r.classList.add('in');});
@@ -160,7 +160,7 @@ var SP=[['hearth','12%','82%','☉ The sun sigil: the kiln is a small sun.'],['c
 SP.forEach(function(s,i){var b=document.createElement('button');b.className='spore'+(found[i]?' found':'');b.textContent='✶';b.setAttribute('aria-label','Hidden sigil');b.style.top=s[1];b.style.left=s[2];
   b.addEventListener('click',function(){found[i]=1;save('redcore.spores',found);b.classList.add('found');var r=b.getBoundingClientRect();sparks(r.left+17,r.top+17,14);pluck(9-i);say(s[3]+' ('+Object.keys(found).length+'/'+SPN+')');sp();});
   $('#'+s[0]).appendChild(b);});
-var SPN=8;function sp(){$('#spores').textContent='✶ '+Object.keys(found).length+'/'+SPN;}sp();
+var SPN=12;function sp(){$('#spores').textContent='✶ '+Object.keys(found).length+'/'+SPN;}sp();
 function takeSigil(i,msg,el){if(found[i]){say(msg+' (already yours)');return;}found[i]=1;save('redcore.spores',found);if(el){el.classList.add('found');var r=el.getBoundingClientRect();sparks(r.left+r.width/2,r.top+r.height/2,16);}pluck(i);say(msg+' ('+Object.keys(found).length+'/'+SPN+')');sp();}
 
 /* ---------- Namer's Bench ---------- */
@@ -309,7 +309,7 @@ function goSt(i,quiet){i=Math.max(0,Math.min(ST.length-1,i));var s=ST[i],prev=jC
   perch=null;var on=SON[s.id];if(on)on();
   if(!quiet&&!AP.on)say(TL[s.id]);
   $('#jprev').disabled=i===0;$('#jnext').disabled=i===ST.length-1;
-  if(!AP.on)history.replaceState(null,'','#north='+s.id);}
+  if(!AP.on)history.replaceState(null,'','#north='+s.id);try{window.dispatchEvent(new CustomEvent('rc:station',{detail:s.id}));}catch(e){}}
 var TL={pit:'Station one. Stir it! Nothing here knows which way is north.',tablet:'A side path. Somebody pressed wedges into this clay. Lore, not a translation.',kiln:'Into the kiln. Hold the bellows and we go up to 1050 °C.',cool:'Now we cool. Watch 675 °C, then 580 °C. Then drag the compass onto the brick.',course:'One brick says very little. Lay its neighbours.',years:'Seasons, then centuries. The wall weathers. The north it holds stays put (model assumption).',wander:'Oh, Ash! My cousin from the chimney. Tap them.',reader:'A scanner at standoff h. Lift it and watch the signal fade: exp(−2πkh).',scroll:'A scroll tucked under the scanner. Lore, clearly marked.',ask:'This is the Ask. The real course starts with your phone.'};
 var SON={};
 function nextMain(d){var i=jCur;do{i+=d;}while(i>0&&i<ST.length-1&&ST[i].br&&!revealed[ST[i].id]);goSt(i);}
@@ -491,7 +491,7 @@ function apPaint(){apb.setAttribute('aria-pressed',AP.on);apb.dataset.cue=AP.on?
   $('#jap').textContent=AP.on?'■ Stop autoplay':'▶ Autoplay';cap.hidden=!AP.on;cap.classList.toggle('paused',AP.paused);$('#appause').textContent=AP.paused?'▶':'❚❚';
   $('#appause').setAttribute('aria-label',AP.paused?'Resume autoplay':'Pause autoplay');}
 function apRun(){apI++;if(apI>=STEPS.length){apStop(true);return;}var s=STEPS[apI];capT.textContent=s.c;capS.textContent=(apI+1)+' / '+STEPS.length;say(s.c,Math.min(5200,s.d));
-  try{s.f();}catch(e){console.warn(e);}apLeft=s.d;apDue=Date.now()+apLeft;clearTimeout(apTm);apTm=setTimeout(apRun,apLeft);}
+  try{s.f();}catch(e){console.warn(e);}try{window.dispatchEvent(new CustomEvent('rc:apstep',{detail:{i:apI,c:s.c}}));}catch(e){}apLeft=s.d;apDue=Date.now()+apLeft;clearTimeout(apTm);apTm=setTimeout(apRun,apLeft);}
 function apProg(){if(!AP.on)return;var now=performance.now();if(!AP.paused)apEl+=now-apLast;apLast=now;capP.style.width=Math.min(100,apEl/TOT*100).toFixed(1)+'%';requestAnimationFrame(apProg);}
 function apStart_(){if(AP.on)return;AP.on=true;AP.paused=false;apI=-1;apEl=0;apLast=performance.now();apStart=Date.now();closeMenu();document.body.classList.add('autoplay');apPaint();requestAnimationFrame(apProg);apRun();window.__apStarted=apStart;}
 function apStop(finished){if(!AP.on)return;AP.on=false;AP.paused=false;clearTimeout(apTm);ghost();document.body.classList.remove('autoplay');bel=0;
@@ -502,6 +502,7 @@ function apPause(){if(!AP.on||AP.paused)return;AP.paused=true;clearTimeout(apTm)
 function apResume(){if(!AP.on||!AP.paused)return;AP.paused=false;apDue=Date.now()+apLeft;apTm=setTimeout(apRun,apLeft);apPaint();}
 function apToggle(){AP.paused?apResume():apPause();}
 function apSkip(){if(!AP.on)return;AP.paused=false;clearTimeout(apTm);apPaint();apRun();}
+window.__rc={say:say,takeSigil:takeSigil,found:function(){return Object.keys(found).length;},closeJ:function(){if(jOpen)closeJ();},closeDoc:closeDoc,closeMenu:closeMenu,ap:function(){return AP.on;},apStop:function(){apStop();},reperch:function(){perch=null;},pluck:pluck,sparks:sparks};
 window.__ap={start:apStart_,stop:apStop,state:function(){return {on:AP.on,paused:AP.paused,i:apI,n:STEPS.length,total:TOT};}};
 apb.addEventListener('click',function(e){e.stopPropagation();AP.on?apStop():apStart_();});
 $('#jap').addEventListener('click',function(e){e.stopPropagation();AP.on?apStop():apStart_();});
