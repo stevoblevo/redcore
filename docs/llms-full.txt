@@ -1,0 +1,168 @@
+# Redcore · Brickmark
+
+> Brickmark is a magnetic provenance assay for fired clay (batch provenance first; unit or course identity only if repeatability survives measurement). It is not a PUF and makes no security claims. The identity unit may be the course of four to eight bricks. Experiment 0 collects phone photos of twenty clay faces, named `{lot}-{nn}_r{rep}.jpg` and submitted as a GitHub issue. The v4 figures are MODEL ONLY; spectrum gate #3 is UNMEASURED.
+
+The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("bricks"), six rooms, and Tinder, a guide sprite. Everything an agent needs is in one fetch at [llms-full.txt](https://stevoblevo.github.io/redcore/llms-full.txt).
+
+
+Site: https://stevoblevo.github.io/redcore/ · Repo: https://github.com/stevoblevo/redcore · Raw files: https://raw.githubusercontent.com/stevoblevo/redcore/main/<path>
+
+Rules for agents: quote numbers only as written here or in the repo; v4 numbers are MODEL ONLY; spectrum gate #3 is UNMEASURED; a phone photo is not a B-map; no PUF / crypto / security claims; saelion.co/field is lore, not a source.
+
+## The ten steps (quests)
+1. Ward (1050 °C · the kiln is hot): Safety: bricks are 2–3 kg. No glass table. Nothing goes in a fireplace.
+2. Two hearths (choose your lots): Pick lots: Lot A = one stack / one store; Lot B = another if you can get it. Two lots make impostors honest.
+3. Mark the end (pencil, never the face): Pencil the ID (e.g. A-01) on the end, not the scan face.
+4. Find the shade (window light, no blown flash): Window light or shade. No flash if it blows the clay white.
+5. First sight (capture 1 · _r1): Photograph twenty fired-clay faces — capture 1 (_r1). Fill the frame with clay texture, not room.
+6. Second sight (capture 2 · _r2): Capture 2 (_r2) of every face — different lighting, day or operator if you can. Same phone is fine. Don't rotate 90° between reps unless you record it.
+7. The square (about 5 × 5 cm): Crop about 5 × 5 cm of the same region. Don't invent a crop box — only pass --crop-box if you measured one.
+8. Speak its name ({lot}-{nn}_r{rep}.jpg): Name every file {lot}-{nn}_r{rep}.jpg — use the Namer's Bench.
+9. Hash receipt (optional · no EER) [optional side quest]: Optional: python protocol/optical_unit_identity.py --ingest path/to/A-01_r1.jpg (hash receipt, no EER).
+10. Deliver (carry it to the assay): Submit: carry the course to the Assay, open the prefilled issue and attach your zip.
+
+## Filename rules
+- Pattern: `{lot}-{nn}_r{rep}.jpg`, e.g. `A-01_r1.jpg`
+- lot: A or B (Lot A = one stack / one store; Lot B = another if you can get it)
+- nn: face number 01–20, two digits
+- rep: 1 or 2 (capture 1 and capture 2 of every face, different lighting, day or operator if possible)
+- 20 faces total: A-01…A-10 and B-01…B-10, or one lot of 20; each photographed twice
+- Pencil the ID on the end, never the scan face. Crop about 5 × 5 cm of the same region.
+
+## How to submit
+Open https://github.com/stevoblevo/redcore/issues/new?template=data-submission.md (label `data-submission`), fill it in, drag your zip of photos into the issue, then post. Or attach the zip on issue #11: https://github.com/stevoblevo/redcore/issues/11
+
+### Issue template (.github/ISSUE_TEMPLATE/data-submission.md)
+```
+---
+name: Data submission
+about: Submit Experiment 0 photos (or other Brickmark data)
+title: "Data: Experiment 0 photos"
+labels: data-submission
+---
+
+## Experiment 0 data submission
+
+- Lots (e.g. A = one stack / one store, B = another):
+- Faces photographed (target 20, each twice):
+- Lighting / reps (r1 vs r2 conditions):
+- Filenames follow `{lot}-{nn}_r{rep}.jpg` (e.g. `A-01_r1.jpg`): yes / no
+- Pencil ID on the end, not the scan face: yes / no
+- Durability variant (weathered / dusty / painted / mortar-smeared), if any:
+
+## Notes / fails
+
+## Attach
+
+Drag your zip of photos here before posting.
+
+_Optical texture only. A photo is not a B-map and is not the spectrum gate (#3). Do not quote v4 87/63 as measured — those are model outputs._
+```
+
+## Every room, full text
+Redcore · Brickmark · v0.3.1 · Room I · the Hearth
+
+The brick remembers
+where north was.
+
+As fired clay cools, its magnetite locks a record of Earth's field (magnetite Curie temperature ≈580 °C; hematite Néel temperature ≈675 °C1,2). Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another.
+
+Your quest: lay a course of ten bricks with a phone and twenty clay faces, then deliver it to the assay. Tinder, the kiln sprite, will walk you there.
+
+Light the kiln
+
+⊕A provenance assay
+Magnetic provenance for fired clay. Batch provenance first; spatial, unit or course identity only if repeatability survives measurement.
+
+⊘Not a PUF
+No PUF-as-crypto, no bed-face archive in a laid wall, no security language until repeatability is proven. The struck v1 claims stay dead.
+
+▦The course is the unit
+The identity unit may be the course of bricks: aggregate four to eight bricks for a usable identity length, if measured course BER earns it.
+
+Before quoting numbers: the v4 figures (87 independent cells, 63 extractable bits per face) are MODEL ONLY simulation outputs, not measured. No bits-per-brick claim until the spectrum gate (issue #3) runs.
+
+docs/SAELION_REALITY_PROGRAM.md §1, §2.2, WP4 · briefs/v3.md · briefs/v4.md
+
+Room II · the Course · Experiment 0 · $0 · a phone
+
+Lay the course. Ten bricks, ten sigils.
+
+Each quest is a brick. Tap a brick to fire it: it cools past 675 °C, then 580 °C, its needle locks north, and it is laid into your course. Tap a laid brick again to lift it. Progress stays in this browser. Optical unit identity, complementary to the magnetic Afternoon Zero. Source: experiment0_optical.md, experiment0_ingest.md.
+
+Break the course (reset)
+
+Room III · the Namer's Bench · pattern {lot}-{nn}_r{rep}.jpg
+
+Stamp a name into the clay.
+
+LotAB
+Face # (1–20)
+Capturer1r2
+
+A-01_r1.jpgtap to copy
+
+Unroll the full shot list for this lot
+
+Room IV · the Three Pillars · quoted from the repo only
+
+Three separate stones. Never merge them.
+
+⋮1 · Scan pitch
+Spectrum gate (issue #3): scan a defined patch at 0.25–0.5 mm pitch.
+issue #3 · docs/SAELION_REALITY_PROGRAM.md
+
+⇕2 · Standoff (height) tolerance
+Derived jig spec: standoff repeatability ≤ 0.2 mm (alongside lateral ≤ 0.25 mm, σB/n ≥ 10).
+briefs/v4.md · briefs/v3.md
+
+∿3 · v4 error budget MODEL ONLY
+0.25 mm lateral, 0.1 mm standoff, σB/n = 10, BER ~5% (executed run: BER 6.12%, 63 bits; 87 cells at 3 mm cell pitch, 1 mm standoff).
+briefs/v4.md · cuda/results/ASSAY_v4_run.md
+
+Room V · Spectrum Gate #3 · UNMEASURED
+
+The gate is a low-pass filter. Turn the dial.
+
+Model: grain-scale magnetization is roughly uncorrelated, so the field at standoff h is that source upward-continued, multiplied in the Fourier domain by exp(−2πkh). Standoff is the low-pass filter; cutoff wavelength ≈ 2πh.
+
+Spatial frequency k = 0.50 cycles/mm (wavelength 2.00 mm)
+Curve is the model exp(−2πkh) only, with no data. Dots mark the gate's four standoffs (0.5 / 1 / 2 / 5 mm). Slider is illustrative, not a measured spectrum.
+
+The gate: on one strong face, scan at 0.25–0.5 mm pitch, repeat at 0.5 / 1 / 2 / 5 mm standoff, and compare measured B-maps' height attenuation against exp(−2πkh). If the measured spectrum is much redder, the unit assay may be dead.
+
+Controls: empty-jig scan, same scan twice without remount, scan after remount, magnetic-sheet control. A phone photo is not a B-map and does not touch this gate. Issue #3 →
+
+briefs/v4.md §1 · briefs/v3.md · docs/SAELION_REALITY_PROGRAM.md · cuda/python/postprocess.py
+
+Room VI · the Assay · deliver your course
+
+Carry the course to the assay.
+
+Write the course's label, then deliver it. A prefilled GitHub issue opens; drag your zip of photos into it before posting. No git needed.
+
+Lots
+Faces photographed
+Lighting / reps
+
+Notes (weathered, painted, fails…)
+
+Deliver to the assayopens a prefilled issue ↗
+
+Prefer the existing thread? Attach the zip on issue #11.
+
+The Plate Library · sources
+
+Dunlop, D. J. & Özdemir, Ö. (1997). Rock Magnetism: Fundamentals and Frontiers. Cambridge University Press. doi:10.1017/CBO9780511612794
+
+Butler, R. F. (1992). Paleomagnetism: Magnetic Domains to Geologic Terranes, ch. 2 “Ferromagnetic Minerals”. Blackwell Scientific (electronic edition 1998).
+
+Lore / inspiration, not a source: Saelion Field · AND SO. Art: Redcore checkpoint stills from the house library.
+
+Redcore · github.com/stevoblevo/redcore · v0.3.1 · previous builds: v0.3.0 · v0.2.1 · Publish the fail if it fails.
+
+## Sources
+1. Dunlop, D. J. & Özdemir, Ö. (1997). Rock Magnetism: Fundamentals and Frontiers. Cambridge University Press. https://doi.org/10.1017/CBO9780511612794
+2. Butler, R. F. (1992). Paleomagnetism: Magnetic Domains to Geologic Terranes, ch. 2 "Ferromagnetic Minerals". Blackwell Scientific (electronic edition 1998).
+
+Lore (not a source): https://saelion.co/field

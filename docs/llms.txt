@@ -1,0 +1,38 @@
+# Redcore · Brickmark
+
+> Brickmark is a magnetic provenance assay for fired clay (batch provenance first; unit or course identity only if repeatability survives measurement). It is not a PUF and makes no security claims. The identity unit may be the course of four to eight bricks. Experiment 0 collects phone photos of twenty clay faces, named `{lot}-{nn}_r{rep}.jpg` and submitted as a GitHub issue. The v4 figures are MODEL ONLY; spectrum gate #3 is UNMEASURED.
+
+The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("bricks"), six rooms, and Tinder, a guide sprite. Everything an agent needs is in one fetch at [llms-full.txt](https://stevoblevo.github.io/redcore/llms-full.txt).
+
+## What Brickmark is
+- [Site: the Hearth](https://stevoblevo.github.io/redcore/#hearth): provenance assay, not a PUF; the course is the unit
+- [README](https://raw.githubusercontent.com/stevoblevo/redcore/main/README.md): repository overview
+- [Saelion reality program](https://raw.githubusercontent.com/stevoblevo/redcore/main/docs/SAELION_REALITY_PROGRAM.md): scope (§1, §2.2, WP4)
+- [Status](https://raw.githubusercontent.com/stevoblevo/redcore/main/docs/STATUS.md): current state of claims
+
+## Data needed, naming, submitting
+- [Site: the Course](https://stevoblevo.github.io/redcore/#course): the ten-step quest list
+- [Site: the Namer's Bench](https://stevoblevo.github.io/redcore/#bench): filename pattern `{lot}-{nn}_r{rep}.jpg`
+- [Experiment 0 optical protocol](https://raw.githubusercontent.com/stevoblevo/redcore/main/protocol/experiment0_optical.md)
+- [Experiment 0 ingest](https://raw.githubusercontent.com/stevoblevo/redcore/main/protocol/experiment0_ingest.md): optional hash receipt, no EER
+- [Submit issue template](https://raw.githubusercontent.com/stevoblevo/redcore/main/.github/ISSUE_TEMPLATE/data-submission.md)
+- [Open a data-submission issue](https://github.com/stevoblevo/redcore/issues/new?template=data-submission.md)
+- [Contributing](https://raw.githubusercontent.com/stevoblevo/redcore/main/CONTRIBUTING.md)
+
+## Specs (three separate values, quoted from the repo; never merge them)
+- [Site: the Three Pillars](https://stevoblevo.github.io/redcore/#pillars): 1) scan pitch 0.25–0.5 mm (issue #3); 2) standoff repeatability ≤ 0.2 mm (derived jig spec); 3) v4 error budget, MODEL ONLY
+- [Brief v4](https://raw.githubusercontent.com/stevoblevo/redcore/main/briefs/v4.md): MODEL ONLY simulation outputs (87 cells, 63 bits per face), not measured
+- [Brief v3](https://raw.githubusercontent.com/stevoblevo/redcore/main/briefs/v3.md)
+
+## Spectrum gate #3 (UNMEASURED)
+- [Site: Gate #3](https://stevoblevo.github.io/redcore/#gate): model exp(−2πkh); repeat at 0.5 / 1 / 2 / 5 mm standoff
+- [Issue #3](https://github.com/stevoblevo/redcore/issues/3): no bits-per-brick claim until it runs
+
+## Citations
+- [Dunlop & Özdemir (1997), Rock Magnetism](https://doi.org/10.1017/CBO9780511612794): magnetite Curie ≈580 °C, hematite Néel ≈675 °C
+- Butler, R. F. (1992), Paleomagnetism, ch. 2 "Ferromagnetic Minerals" (no link)
+
+## Optional
+- [Saelion Field](https://saelion.co/field): lore / inspiration only, not a source
+- [Changelog](https://raw.githubusercontent.com/stevoblevo/redcore/main/CHANGELOG.md)
+- [Previous build v0.3.0](https://stevoblevo.github.io/redcore/v0.3.0/)

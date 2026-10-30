@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Redcore · Brickmark — lay the course</title>
+<meta name="description" content="A small game: lay a course of ten bricks to collect the photos the Brickmark provenance assay needs, then deliver them to the assay.">
+<meta name="theme-color" content="#08070a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect y=%224%22 width=%2216%22 height=%228%22 rx=%221%22 fill=%22%23c24a32%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="kiln" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- HUD: compass, course, tally, discoveries, sound -->
+<div class="hud" role="region" aria-label="Your course">
+  <button class="compass" id="compass" aria-label="Magnetic north. Points at your next quest.">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18"/><g id="needle"><path class="n" d="M20 5 L24 20 L16 20Z"/><path class="s" d="M20 35 L24 20 L16 20Z"/></g><text x="20" y="4.6">N</text></svg>
+  </button>
+  <div class="hudcourse" id="hudcourse" aria-hidden="true"></div>
+  <span class="tally" id="tally" title="Bricks laid, Uruk-style">0</span>
+  <span class="spores" id="spores" title="Hidden sigils found">✶ 0/5</span>
+  <button class="snd" id="snd" aria-pressed="false" aria-label="Sound">♪ off</button>
+</div>
+
+<!-- room map (invisible overlay doors) -->
+<nav class="doors" aria-label="Rooms">
+  <a href="#hearth" data-room="hearth"><b>☉</b><span>Hearth</span></a>
+  <a href="#course" data-room="course"><b>▦</b><span>Course</span></a>
+  <a href="#bench" data-room="bench"><b>✎</b><span>Bench</span></a>
+  <a href="#pillars" data-room="pillars"><b>Ⅲ</b><span>Pillars</span></a>
+  <a href="#gate" data-room="gate"><b>⌇</b><span>Gate #3</span></a>
+  <a href="#assay" data-room="assay"><b>⚖</b><span>Assay</span></a>
+</nav>
+
+<!-- the guide pet -->
+<div class="pet" id="pet" aria-hidden="true">
+  <svg viewBox="0 0 80 80"><defs><radialGradient id="coal" cx=".45" cy=".4" r=".7"><stop offset="0" stop-color="#ffd38a"/><stop offset=".35" stop-color="#ff6a3a"/><stop offset=".8" stop-color="#9c1d14"/><stop offset="1" stop-color="#3a0b08"/></radialGradient></defs>
+    <path class="flame" d="M40 6 C48 18 58 22 58 40 C58 54 50 64 40 64 C30 64 22 54 22 40 C22 28 32 24 34 14 C37 20 38 22 40 6Z" fill="url(#coal)"/>
+    <g class="eyes"><ellipse cx="33" cy="42" rx="3.4" ry="4.6"/><ellipse cx="47" cy="42" rx="3.4" ry="4.6"/></g>
+    <path class="mouth" d="M36 52 Q40 55 44 52" fill="none"/>
+    <g class="tail"><path d="M40 64 L40 76" /><path class="tip" d="M40 78 L37 72 L43 72Z"/></g>
+  </svg>
+</div>
+<div class="bubble" id="bubble" role="status" aria-live="polite"></div>
+
+<main>
+<!-- ROOM I · HEARTH -->
+<section class="room hearth" id="hearth">
+  <div class="hero-art" style="background-image:url(../assets/hearthplate.webp)"></div>
+  <div class="inner">
+    <p class="eyebrow">Redcore · Brickmark · <span class="ver">v0.3.0</span> · Room I · the Hearth</p>
+    <h1>The brick remembers<br><span class="red">where north was.</span></h1>
+    <p class="lede">As fired clay cools, its magnetite locks a record of Earth's field (magnetite Curie temperature ≈580&nbsp;°C; hematite Néel temperature ≈675&nbsp;°C<sup><a href="#src-1">1</a>,<a href="#src-2">2</a></sup>). Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another.</p>
+    <p class="lede"><strong>Your quest: lay a course of ten bricks with a phone and twenty clay faces, then deliver it to the assay.</strong> Tinder, the kiln sprite, will walk you there.</p>
+    <a class="start" href="#course" id="start"><span>Light the kiln</span></a>
+    <div class="trio">
+      <article class="relic"><i class="sig">⊕</i><h3>A provenance assay</h3><p>Magnetic provenance for fired clay. <strong>Batch provenance first</strong>; spatial, unit or course identity only if repeatability survives measurement.</p></article>
+      <article class="relic"><i class="sig">⊘</i><h3>Not a PUF</h3><p>No PUF-as-crypto, no bed-face archive in a laid wall, no security language until repeatability is proven. The struck v1 claims stay dead.</p></article>
+      <article class="relic"><i class="sig">▦</i><h3>The course is the unit</h3><p>The identity unit may be the <strong>course of bricks</strong>: aggregate four to eight bricks for a usable identity length, if measured course BER earns it.</p></article>
+    </div>
+    <p class="warn"><b>Before quoting numbers:</b> the v4 figures (<strong>87 independent cells</strong>, <strong>63 extractable bits</strong> per face) are <span class="tag model">MODEL ONLY</span> simulation outputs, not measured. No bits-per-brick claim until the spectrum gate (issue #3) runs.</p>
+    <p class="src">docs/SAELION_REALITY_PROGRAM.md §1, §2.2, WP4 · briefs/v3.md · briefs/v4.md</p>
+  </div>
+</section>
+
+<!-- ROOM II · COURSE (quests) -->
+<section class="room course" id="course">
+  <div class="inner">
+    <p class="eyebrow">Room II · the Course · Experiment 0 · $0 · a phone</p>
+    <h2>Lay the course. <span class="red">Ten bricks, ten sigils.</span></h2>
+    <p class="muted">Each quest is a brick. Tap a brick to fire it: it cools past 675&nbsp;°C, then 580&nbsp;°C, its needle locks north, and it is laid into your course. Tap a laid brick again to lift it. Progress stays in this browser. Optical unit identity, complementary to the magnetic Afternoon Zero. Source: <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_optical.md">experiment0_optical.md</a>, <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_ingest.md">experiment0_ingest.md</a>.</p>
+    <div class="wall" id="wall" aria-hidden="true"></div>
+    <ol class="quests" id="quests"></ol>
+    <div class="row"><span class="muted" id="coursemsg"></span><button class="ghost" id="reset">Break the course (reset)</button></div>
+  </div>
+</section>
+
+<!-- ROOM III · NAMER'S BENCH -->
+<section class="room bench" id="bench">
+  <div class="inner">
+    <p class="eyebrow">Room III · the Namer's Bench · pattern {lot}-{nn}_r{rep}.jpg</p>
+    <h2>Stamp a name into the clay.</h2>
+    <div class="stamp">
+      <div class="dials">
+        <label>Lot<select id="lot"><option>A</option><option>B</option></select></label>
+        <label>Face # (1–20)<input id="nn" type="number" min="1" max="20" value="1"></label>
+        <label>Capture<select id="rep"><option value="1">r1</option><option value="2">r2</option></select></label>
+      </div>
+      <button class="tablet" id="copy" aria-label="Copy file name"><code id="fname">A-01_r1.jpg</code><small id="copyhint">tap to copy</small></button>
+    </div>
+    <details><summary>Unroll the full shot list for this lot</summary><pre id="shotlist"></pre></details>
+  </div>
+</section>
+
+<!-- ROOM IV · THREE PILLARS -->
+<section class="room pillars" id="pillars">
+  <div class="inner">
+    <p class="eyebrow">Room IV · the Three Pillars · quoted from the repo only</p>
+    <h2>Three separate stones. <span class="red">Never merge them.</span></h2>
+    <div class="specs">
+      <article class="pillar"><i class="sig">⋮</i><h3>1 · Scan pitch</h3><p>Spectrum gate (issue #3): scan a defined patch at <strong>0.25–0.5 mm pitch</strong>.</p><p class="src">issue #3 · docs/SAELION_REALITY_PROGRAM.md</p></article>
+      <article class="pillar"><i class="sig">⇕</i><h3>2 · Standoff (height) tolerance</h3><p>Derived jig spec: standoff repeatability <strong>≤ 0.2 mm</strong> (alongside lateral ≤ 0.25 mm, σ<sub>B</sub>/n ≥ 10).</p><p class="src">briefs/v4.md · briefs/v3.md</p></article>
+      <article class="pillar model"><i class="sig">∿</i><h3>3 · v4 error budget <span class="tag model">MODEL ONLY</span></h3><p>0.25 mm lateral, 0.1 mm standoff, σ<sub>B</sub>/n = 10, BER ~5% (executed run: BER 6.12%, 63 bits; 87 cells at 3 mm cell pitch, 1 mm standoff).</p><p class="src">briefs/v4.md · cuda/results/ASSAY_v4_run.md</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ROOM V · GATE #3 -->
+<section class="room gate" id="gate">
+  <div class="inner">
+    <p class="eyebrow">Room V · Spectrum Gate #3 · <span class="tag model">UNMEASURED</span></p>
+    <h2>The gate is a low-pass filter. <span class="red">Turn the dial.</span></h2>
+    <p>Model: grain-scale magnetization is roughly uncorrelated, so the field at standoff <em>h</em> is that source upward-continued, multiplied in the Fourier domain by <code>exp(−2πkh)</code>. Standoff is the low-pass filter; cutoff wavelength ≈ 2π<em>h</em>.</p>
+    <figure class="plot">
+      <canvas id="decay" width="900" height="360" aria-label="Plot of exp(-2 pi k h) against standoff h"></canvas>
+      <figcaption>
+        <label>Spatial frequency <em>k</em> = <output id="kout">0.50</output> cycles/mm (wavelength <output id="lout">2.00</output> mm)<input id="k" type="range" min="0.05" max="2" step="0.01" value="0.5"></label>
+        <span class="muted">Curve is the model <code>exp(−2πkh)</code> only, with no data. Dots mark the gate's four standoffs (0.5 / 1 / 2 / 5 mm). Slider is illustrative, not a measured spectrum.</span>
+      </figcaption>
+    </figure>
+    <p>The gate: on one strong face, scan at 0.25–0.5 mm pitch, repeat at 0.5 / 1 / 2 / 5 mm standoff, and compare measured B-maps' height attenuation against <code>exp(−2πkh)</code>. If the measured spectrum is much redder, the unit assay may be dead.</p>
+    <p class="muted">Controls: empty-jig scan, same scan twice without remount, scan after remount, magnetic-sheet control. A phone photo is <em>not</em> a B-map and does not touch this gate. <a href="https://github.com/stevoblevo/redcore/issues/3">Issue #3 →</a></p>
+    <p class="src">briefs/v4.md §1 · briefs/v3.md · docs/SAELION_REALITY_PROGRAM.md · cuda/python/postprocess.py</p>
+  </div>
+</section>
+
+<!-- ROOM VI · ASSAY -->
+<section class="room assay" id="assay">
+  <div class="hero-art dim" style="background-image:url(../assets/stranger-2180.webp)"></div>
+  <div class="inner">
+    <p class="eyebrow">Room VI · the Assay · deliver your course</p>
+    <h2>Carry the course <span class="red">to the assay.</span></h2>
+    <p>Write the course's label, then deliver it. A prefilled GitHub issue opens; drag your zip of photos into it before posting. No git needed.</p>
+    <div class="dials">
+      <label>Lots<input id="s_lots" placeholder="A (HD RED0126), B (used)"></label>
+      <label>Faces photographed<input id="s_faces" type="number" min="0" max="40" placeholder="20"></label>
+      <label>Lighting / reps<input id="s_light" placeholder="r1 window, r2 shade next day"></label>
+    </div>
+    <label class="full">Notes (weathered, painted, fails…)<textarea id="s_notes" rows="3"></textarea></label>
+    <div class="altar">
+      <div class="plate" id="plate" aria-hidden="true"><div class="mini" id="minicourse"></div></div>
+      <a id="submitLink" class="deliver" target="_blank" rel="noopener" href="https://github.com/stevoblevo/redcore/issues/new?template=data-submission.md"><span>Deliver to the assay</span><small>opens a prefilled issue ↗</small></a>
+    </div>
+    <p class="muted">Prefer the existing thread? Attach the zip on <a href="https://github.com/stevoblevo/redcore/issues/11">issue #11</a>.</p>
+  </div>
+</section>
+
+<section class="room library" id="sources">
+  <div class="hero-art dim" style="background-image:url(../assets/plate-library.webp)"></div>
+  <div class="inner">
+    <p class="eyebrow">The Plate Library · sources</p>
+    <ol>
+      <li id="src-1">Dunlop, D. J. &amp; Özdemir, Ö. (1997). <em>Rock Magnetism: Fundamentals and Frontiers</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511612794">doi:10.1017/CBO9780511612794</a></li>
+      <li id="src-2">Butler, R. F. (1992). <em>Paleomagnetism: Magnetic Domains to Geologic Terranes</em>, ch. 2 “Ferromagnetic Minerals”. Blackwell Scientific (electronic edition 1998).</li>
+    </ol>
+    <p class="src">Lore / inspiration, not a source: <a href="https://saelion.co/field">Saelion Field</a> · AND SO. Art: Redcore checkpoint stills from the house library.</p>
+    <p class="foot">Redcore · <a href="https://github.com/stevoblevo/redcore">github.com/stevoblevo/redcore</a> · <a href="https://github.com/stevoblevo/redcore/blob/main/CHANGELOG.md">v0.3.0</a> · archived build · <a href="../">play v0.3.1 →</a> · older: <a href="../v0.2.1/">v0.2.1</a> · Publish the fail if it fails.</p>
+  </div>
+</section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

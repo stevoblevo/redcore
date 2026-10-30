@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Redcore · Brickmark — lay the course</title>
 <meta name="description" content="A small game: lay a course of ten bricks to collect the photos the Brickmark provenance assay needs, then deliver them to the assay.">
+<meta property="og:title" content="Redcore · Brickmark — lay the course">
+<meta property="og:description" content="Lay a course of ten bricks: collect the phone photos the Brickmark provenance assay needs (not a PUF), then deliver them to the assay.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stevoblevo.github.io/redcore/">
+<meta property="og:image" content="https://stevoblevo.github.io/redcore/assets/hearthplate.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
+<link rel="sitemap" type="application/xml" href="sitemap.xml">
 <meta name="theme-color" content="#08070a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect y=%224%22 width=%2216%22 height=%228%22 rx=%221%22 fill=%22%23c24a32%22/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
@@ -22,6 +30,7 @@
   <span class="tally" id="tally" title="Bricks laid, Uruk-style">0</span>
   <span class="spores" id="spores" title="Hidden sigils found">✶ 0/5</span>
   <button class="snd" id="snd" aria-pressed="false" aria-label="Sound">♪ off</button>
+  <button class="pmode" id="pmode" type="button" aria-label="Tinder: follow" data-cue="Tinder · follows"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fl" d="M12 2.5C14.6 6.4 17.6 7.6 17.6 13.2C17.6 17.6 15.1 20.6 12 20.6C8.9 20.6 6.4 17.6 6.4 13.2C6.4 9.6 9.4 8.4 10 5.2C10.9 7 11.4 7.6 12 2.5Z"/><g class="ic-follow"><path d="M15.5 20.5 L21 15.5 M18.2 15.4 H21 V18.2"/></g><g class="ic-perch"><path d="M4 21.5 H20"/></g><g class="ic-nap"><path d="M16 3.5 H20 L16 7.5 H20"/></g></svg></button>
 </div>
 
 <!-- room map (invisible overlay doors) -->
@@ -43,6 +52,15 @@
     <g class="tail"><path d="M40 64 L40 76" /><path class="tip" d="M40 78 L37 72 L43 72Z"/></g>
   </svg>
 </div>
+<div class="petmenu" id="petmenu" role="menu" aria-label="Tinder mode" hidden>
+  <button type="button" role="menuitemradio" data-m="follow">↝ Follow</button><button type="button" role="menuitemradio" data-m="perch">⌂ Perch</button><button type="button" role="menuitemradio" data-m="nap">☾ Nap</button>
+</div>
+<div class="reader" id="reader" role="dialog" aria-modal="false" aria-labelledby="rdtitle" hidden>
+  <div class="rdpanel" id="rdpanel">
+    <div class="rdbar" id="rdbar"><span class="rdseal" aria-hidden="true">▦</span><b id="rdtitle">tablet</b><a class="rdsrc" id="rdsrc" target="_blank" rel="noopener" title="Leaving the hearth: view on GitHub">↗</a><button type="button" class="rdx" id="rdx" aria-label="Close tablet (Esc)">✕</button></div>
+    <article class="rdbody" id="rdbody"></article>
+  </div>
+</div>
 <div class="bubble" id="bubble" role="status" aria-live="polite"></div>
 
 <main>
@@ -50,7 +68,7 @@
 <section class="room hearth" id="hearth">
   <div class="hero-art" style="background-image:url(assets/hearthplate.webp)"></div>
   <div class="inner">
-    <p class="eyebrow">Redcore · Brickmark · <span class="ver">v0.3.0</span> · Room I · the Hearth</p>
+    <p class="eyebrow">Redcore · Brickmark · <span class="ver">v0.3.1</span> · Room I · the Hearth</p>
     <h1>The brick remembers<br><span class="red">where north was.</span></h1>
     <p class="lede">As fired clay cools, its magnetite locks a record of Earth's field (magnetite Curie temperature ≈580&nbsp;°C; hematite Néel temperature ≈675&nbsp;°C<sup><a href="#src-1">1</a>,<a href="#src-2">2</a></sup>). Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another.</p>
     <p class="lede"><strong>Your quest: lay a course of ten bricks with a phone and twenty clay faces, then deliver it to the assay.</strong> Tinder, the kiln sprite, will walk you there.</p>
@@ -155,12 +173,14 @@
       <li id="src-1">Dunlop, D. J. &amp; Özdemir, Ö. (1997). <em>Rock Magnetism: Fundamentals and Frontiers</em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511612794">doi:10.1017/CBO9780511612794</a></li>
       <li id="src-2">Butler, R. F. (1992). <em>Paleomagnetism: Magnetic Domains to Geologic Terranes</em>, ch. 2 “Ferromagnetic Minerals”. Blackwell Scientific (electronic edition 1998).</li>
     </ol>
+    <p class="agents"><a class="agentdoor" href="https://github.com/stevoblevo/redcore/blob/main/docs/llms.txt"><b>⌬</b><span>for agents · llms.txt</span></a> <a class="agentfull" href="llms-full.txt" target="_blank" rel="noopener">full text</a></p>
     <p class="src">Lore / inspiration, not a source: <a href="https://saelion.co/field">Saelion Field</a> · AND SO. Art: Redcore checkpoint stills from the house library.</p>
-    <p class="foot">Redcore · <a href="https://github.com/stevoblevo/redcore">github.com/stevoblevo/redcore</a> · <a href="https://github.com/stevoblevo/redcore/blob/main/CHANGELOG.md">v0.3.0</a> · previous build: <a href="v0.2.1/">v0.2.1</a> · Publish the fail if it fails.</p>
+    <p class="foot">Redcore · <a href="https://github.com/stevoblevo/redcore">github.com/stevoblevo/redcore</a> · <a href="https://github.com/stevoblevo/redcore/blob/main/CHANGELOG.md">v0.3.1</a> · previous builds: <a href="v0.3.0/">v0.3.0</a> · <a href="v0.2.1/">v0.2.1</a> · Publish the fail if it fails.</p>
   </div>
 </section>
 </main>
 
+<script src="vendor/marked.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

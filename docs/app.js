@@ -1,4 +1,4 @@
-/* Redcore · Brickmark v0.3.0 — lay the course. Vanilla, no build. */
+/* Redcore · Brickmark v0.3.1 — lay the course. Vanilla, no build. */
 (function(){
 'use strict';
 var $=function(s,r){return (r||document).querySelector(s);},$$=function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
@@ -74,21 +74,55 @@ function sparks(x,y,n){if(RM)return;for(var i=0;i<n;i++){(function(){var s=docum
 
 /* ---------- the guide pet: Tinder, a kiln sprite ---------- */
 var pet=$('#pet'),bub=$('#bubble'),PX=innerWidth-100,PY=innerHeight-140,VX=0,VY=0,mx=PX,my=PY,drag=null,lastMove=Date.now(),bt=null;
-function say(t,ms){bub.textContent=t;bub.classList.add('on');clearTimeout(bt);bt=setTimeout(function(){bub.classList.remove('on');},ms||3600);}
+function say(t,ms){if(typeof mode!=='undefined'&&mode==='nap')return;bub.textContent=t;bub.classList.add('on');clearTimeout(bt);bt=setTimeout(function(){bub.classList.remove('on');},ms||3600);}
 addEventListener('pointermove',function(e){if(e.pointerType==='mouse'){mx=e.clientX;my=e.clientY;lastMove=Date.now();}
   if(drag){var nx=e.clientX-drag.ox,ny=e.clientY-drag.oy;VX=nx-PX;VY=ny-PY;PX=nx;PY=ny;drag.moved=drag.moved||Math.abs(VX)+Math.abs(VY)>3;}},{passive:true});
-pet.addEventListener('pointerdown',function(e){drag={ox:e.clientX-PX,oy:e.clientY-PY,moved:false};pet.setPointerCapture(e.pointerId);pet.style.cursor='grabbing';});
-pet.addEventListener('pointerup',function(){var d=drag;drag=null;pet.style.cursor='';if(d&&!d.moved)petTap();else{say(THROW[(Math.random()*THROW.length)|0]);thrown=Date.now();}});
+var holdT=null,held=false;
+pet.addEventListener('pointerdown',function(e){drag={ox:e.clientX-PX,oy:e.clientY-PY,moved:false};held=false;pet.setPointerCapture(e.pointerId);pet.style.cursor='grabbing';
+  clearTimeout(holdT);holdT=setTimeout(function(){if(drag&&!drag.moved){held=true;openMenu();}},560);});
+pet.addEventListener('pointerup',function(){clearTimeout(holdT);var d=drag;drag=null;pet.style.cursor='';if(held){held=false;return;}if(d&&!d.moved)petTap();else{say(THROW[(Math.random()*THROW.length)|0]);thrown=Date.now();}});
+pet.addEventListener('pointercancel',function(){clearTimeout(holdT);drag=null;pet.style.cursor='';});
+pet.addEventListener('contextmenu',function(e){e.preventDefault();});
 var THROW=['Wheee — I am ceramic, I bounce!','Rude. Accurate, but rude.','I landed on north. Obviously.'];var thrown=0;
 function petTap(){var nx=nextQ();if(nx<0){say('All ten laid. The Assay awaits ⚖ — or go find the hidden ✶ sigils.');go('#assay');return;}
   var q=Q[nx];say('Next brick: '+q.n+' — '+q.st+'. Follow my tail!');var li=$$('.quest',ql)[nx];li.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'});}
 setInterval(function(){pet.classList.add('blink');setTimeout(function(){pet.classList.remove('blink');},160);},2760); /* Sae-wink: open 2.6 s, closed 0.16 s */
+/* ---------- pet mode: follow · perch · nap (v0.3.1) ---------- */
+var COARSE=matchMedia('(pointer:coarse)').matches,MODES=['follow','perch','nap'],
+  mode=load('redcore.petmode',null);if(MODES.indexOf(mode)<0)mode=(RM||COARSE)?'perch':'follow';
+var wake=load('redcore.petwake','perch'),pm=$('#pmode'),menu=$('#petmenu'),curRoom='hearth',perch=null;
+var MLINE={follow:'Follow mode: I\'ll trail your cursor. Say if I get clingy.',perch:'Perch mode: I\'ll sit by the side and hop rooms with you.',nap:'Nap time. I\'ll be the ember up top — tap it to wake me.'};
+var CUE={follow:'Tinder · follows (tap: perch)',perch:'Tinder · perches (tap: nap)',nap:'Tinder · napping (tap: wake)'};
+function pmPaint(){pm.dataset.m=mode;pm.setAttribute('data-cue',CUE[mode]);pm.setAttribute('aria-label','Tinder mode: '+mode+'. Tap to change.');
+  pet.classList.toggle('nap',mode==='nap');$$('button',menu).forEach(function(b){b.setAttribute('aria-checked',b.dataset.m===mode);});}
+function setMode(m,quiet){if(m===mode&&!quiet)return;var was=mode;mode=m;save('redcore.petmode',m);if(m!=='nap'){wake=m;save('redcore.petwake',m);}
+  perch=null;pmPaint();closeMenu();if(quiet)return;
+  if(was==='nap'){var r=pm.getBoundingClientRect();PX=r.left-20;PY=r.bottom+4;VX=0;VY=0;}
+  if(m==='nap'){bub.classList.remove('on');pm.classList.add('cue');setTimeout(function(){pm.classList.remove('cue');},2200);var r2=pet.getBoundingClientRect();sparks(r2.left+32,r2.top+32,8);}
+  else say(MLINE[m]);}
+pm.addEventListener('click',function(){var r=pm.getBoundingClientRect();if(mode==='nap'){sparks(r.left+13,r.top+13,10);setMode(wake==='follow'&&(RM||COARSE)?'perch':wake);}
+  else setMode(mode==='follow'?'perch':'nap');});
+function openMenu(){pmPaint();menu.hidden=false;var w=menu.offsetWidth||220;menu.style.transform='translate('+Math.max(6,Math.min(PX-w/2+32,innerWidth-w-6))+'px,'+Math.max(56,PY-50)+'px)';say('Follow, perch, or nap?',2400);}
+function closeMenu(){menu.hidden=true;}
+$$('button',menu).forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();if(b.dataset.m===mode){closeMenu();say(MLINE[mode]);}else setMode(b.dataset.m);});});
+addEventListener('pointerdown',function(e){if(!menu.hidden&&!menu.contains(e.target)&&!pet.contains(e.target))closeMenu();});
+addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+function perchSpot(){var room=$('#'+curRoom),W=innerWidth,H=innerHeight,side=W-(W<760?66:96),y=H*.3;
+  var nq=$$('.quest',ql)[nextQ()],qr=nq&&nq.getBoundingClientRect();
+  if(curRoom==='course'&&qr&&qr.top>70&&qr.bottom<H-60)y=qr.top+qr.height/2-32;
+  else if(room){var h=$('h2',room)||$('h1',room),hr=h&&h.getBoundingClientRect();if(hr&&hr.top>60&&hr.top<H-160)y=hr.top-4;}
+  return [side,Math.max(64,Math.min(H-140,y))];}
+addEventListener('resize',function(){perch=null;});pmPaint();
 function tick(){
-  if(!drag){var tx,ty,idle=Date.now()-lastMove>2500||matchMedia('(pointer:coarse)').matches;
+  if(!drag&&mode!=='nap'){var tx,ty,idle=Date.now()-lastMove>2500||COARSE;
     if(Date.now()-thrown<1400){VX*=.94;VY*=.94;PX+=VX;PY+=VY;}
+    else if(rdOpen){var pr=$('#rdpanel').getBoundingClientRect();tx=Math.max(4,pr.left+18);ty=Math.max(56,pr.top-50);
+      if(RM){PX=tx;PY=ty;VX=VY=0;}else{VX+=(tx-PX)*.02;VY+=(ty-PY)*.02;VX*=.8;VY*=.8;PX+=VX;PY+=VY;}}
+    else if(mode==='perch'){if(!perch)perch=perchSpot();tx=perch[0];ty=perch[1];
+      if(RM){PX=tx;PY=ty;VX=0;VY=0;}else{VX+=(tx-PX)*.02;VY+=(ty-PY)*.02;VX*=.8;VY*=.8;PX+=VX;PY+=VY;if(Math.abs(tx-PX)<.3&&Math.abs(ty-PY)<.3){PX=tx;PY=ty;VX=VY=0;}}}
     else{ if(idle){var t=target();tx=t[0];ty=t[1];}else{tx=mx+28;ty=my+22;}
       VX+=(tx-PX)*.012;VY+=(ty-PY)*.012;VX*=.86;VY*=.86;PX+=VX;PY+=VY;}
-    var W=innerWidth,H=innerHeight;if(PX<4){PX=4;VX=-VX*.6;}if(PX>W-60){PX=W-60;VX=-VX*.6;}if(PY<56){PY=56;VY=-VY*.6;}if(PY>H-120){PY=H-120;VY=-VY*.6;}}
+    var W=innerWidth,H=innerHeight;if(!rdOpen&&PX<4){PX=4;VX=-VX*.6;}if(PX>W-60){PX=W-60;VX=-VX*.6;}if(PY<56){PY=56;VY=-VY*.6;}if(PY>H-120){PY=H-120;VY=-VY*.6;}}
   pet.style.transform='translate('+PX+'px,'+PY+'px) rotate('+Math.max(-20,Math.min(20,VX*2))+'deg)';
   bub.style.transform='translate('+Math.min(PX+56,innerWidth-250)+'px,'+Math.max(PY-48,60)+'px)';bub.style.left='0';bub.style.top='0';
   /* tail = compass needle toward next quest */
@@ -111,7 +145,7 @@ function go(h){var el=$(h);if(el)el.scrollIntoView({behavior:RM?'auto':'smooth'}
 /* ---------- rooms ---------- */
 var LINES={hearth:'Hi! I\'m Tinder, born in a kiln. Drag me, throw me, tap me for hints.',course:'Each quest is a brick. Fire all ten and we\'ve got a course.',bench:'The Bench stamps names. Tap the tablet to copy one.',pillars:'Three pillars. Merge them and the roof falls in. Literally.',gate:'Gate #3 is unmeasured. This curve is a model, not a promise.',assay:'This is it. Label the course, then deliver it.',sources:'The Plate Library. Real books live here.'},seen={};
 var rooms=$$('.room');
-if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');var id=en.target.id;
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');var id=en.target.id;if(id!==curRoom){curRoom=id;perch=null;}
   $$('.doors a').forEach(function(a){a.classList.toggle('here',a.dataset.room===id);});
   if(!seen[id]){seen[id]=1;setTimeout(function(){say(LINES[id]||'');},500);}}});},{threshold:.35});rooms.forEach(function(r){io.observe(r);});}
 else rooms.forEach(function(r){r.classList.add('in');});
@@ -176,6 +210,58 @@ function draw(){if(dc.clientWidth&&dc.clientWidth<600){dc.width=600;dc.height=38
   HS.forEach(function(hv){var a=Math.exp(-2*Math.PI*kv*hv),X=L+pw*hv/HMAX,Y=T+ph*(1-a);d.fillStyle='#fff';d.beginPath();d.arc(X,Y,5,0,6.283);d.fill();d.fillStyle='rgba(255,200,180,.9)';d.fillText(a<0.001?a.toExponential(1):a.toFixed(3),X+8,Y-8);});
   d.fillStyle='#ff8a5c';d.fillText('exp(−2πkh) · model, unmeasured',L+8,T+14);}
 k.addEventListener('input',draw);draw();
+
+/* ---------- the clay tablet: repo docs read in-world (v0.3.1) ---------- */
+var REPO='https://github.com/stevoblevo/redcore',RAW='https://raw.githubusercontent.com/stevoblevo/redcore/main/',rdOpen=false,rdPath='',
+  rd=$('#reader'),rdp=$('#rdpanel'),rdb=$('#rdbody'),rdLast=null;
+function repoPath(href,base){var m;
+  if(/^https?:/i.test(href)){
+    if(href.replace(/\/$/,'')===REPO)return 'README.md';
+    m=href.match(/^https:\/\/github\.com\/stevoblevo\/redcore\/(?:blob|tree)\/main\/([^?#]+)/);return m?decodeURIComponent(m[1]):null;}
+  if(base===undefined||/^(#|mailto:|data:)/i.test(href))return null;
+  var parts=(base.replace(/[^\/]*$/,'')+href.split('#')[0].split('?')[0]).split('/'),out=[];
+  parts.forEach(function(x){if(x==='..')out.pop();else if(x&&x!=='.')out.push(x);});return out.join('/')||null;}
+function esc(t){return t.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function clean(html){var d=new DOMParser().parseFromString('<div>'+html+'</div>','text/html'),r=d.body.firstChild;
+  $$('script,iframe,object,embed,style',r).forEach(function(n){n.remove();});
+  $$('*',r).forEach(function(n){[].slice.call(n.attributes).forEach(function(a){if(/^on/i.test(a.name)||/^\s*javascript:/i.test(a.value))n.removeAttribute(a.name);});});
+  /* math-ish: $…$ and $$…$$ spans */
+  $$('p,li,td',r).forEach(function(n){if(/\$[^$\n]+\$/.test(n.innerHTML)&&!n.querySelector('code'))n.innerHTML=n.innerHTML.replace(/\$\$?([^$\n]+)\$\$?/g,'<span class="math">$1</span>');});
+  return r.innerHTML;}
+function openDoc(path,push){rdPath=path;rdLast=rdLast||document.activeElement;rd.hidden=false;rdOpen=true;closeMenu();
+  $('#rdtitle').textContent=path;$('#rdsrc').href=REPO+'/blob/main/'+path;rdb.innerHTML='<p class="rdwait">Unfurling the tablet…</p>';rdb.scrollTop=0;
+  rdp.style.transform='';if(push!==false)history.replaceState(null,'','#read='+encodeURI(path));
+  say('A tablet! I\'ll sit on its edge. Esc or ✕ to put it back.');$('#rdx').focus({preventScroll:true});
+  fetch(RAW+path).then(function(r){if(!r.ok)throw new Error(r.status);return r.text();}).then(function(t){if(rdPath!==path)return;
+    rdb.innerHTML=/\.md$/i.test(path)&&window.marked?clean(marked.parse(t)):'<pre><code>'+esc(t)+'</code></pre>';
+    var h=$('h1',rdb);if(h)$('#rdtitle').textContent=h.textContent+' · '+path;
+    $$('a[href]',rdb).forEach(function(a){var h=a.getAttribute('href');if(h.charAt(0)==='#'){a.addEventListener('click',function(e){e.preventDefault();var t=rdb.querySelector('[id="'+h.slice(1)+'"]');if(t)t.scrollIntoView({behavior:RM?'auto':'smooth'});});return;}
+      var rp=repoPath(h,path);if(rp)a.dataset.read=rp;else if(/^https?:/i.test(h)){a.target='_blank';a.rel='noopener';}});
+  }).catch(function(e){if(rdPath===path)rdb.innerHTML='<p class="rdwait">The tablet would not unfurl ('+esc(String(e.message||e))+'). <a href="'+REPO+'/blob/main/'+esc(path)+'" target="_blank" rel="noopener" class="leave">Read it on GitHub</a>.</p>';});}
+function closeDoc(){if(!rdOpen)return;rd.hidden=true;rdOpen=false;rdPath='';perch=null;if(/^#read=/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);
+  if(rdLast&&rdLast.focus)rdLast.focus({preventScroll:true});rdLast=null;}
+$('#rdx').addEventListener('click',closeDoc);
+rd.addEventListener('click',function(e){if(e.target===rd)closeDoc();});
+addEventListener('keydown',function(e){if(e.key==='Escape')closeDoc();});
+var lc=document.createElement('div');lc.className='leavecue';lc.setAttribute('role','status');document.body.appendChild(lc);var lct=null;
+function leaving(where){lc.textContent='Leaving the hearth → '+where+' ↗';lc.classList.add('on');clearTimeout(lct);lct=setTimeout(function(){lc.classList.remove('on');},2200);}
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey)return;
+  var h=a.getAttribute('href'),rp=a.dataset.read||(a.closest('#reader')?null:repoPath(h));
+  if(rp&&a.id!=='rdsrc'){e.preventDefault();openDoc(rp);return;}
+  if(/^https?:/i.test(h)&&a.host!==location.host){if(!a.target){a.target='_blank';a.rel='noopener';}
+    if(/github\.com/.test(a.host)){leaving('GitHub');if(a.id!=='submitLink')say('Leaving the hearth for GitHub. I\'ll keep the fire on.');}}},true);
+/* drag the tablet by its bar */
+(function(){var bar=$('#rdbar'),d=null,ox=0,oy=0;
+  bar.addEventListener('pointerdown',function(e){if(e.target.closest('button,a'))return;d={x:e.clientX-ox,y:e.clientY-oy};bar.setPointerCapture(e.pointerId);bar.style.cursor='grabbing';});
+  bar.addEventListener('pointermove',function(e){if(!d)return;ox=e.clientX-d.x;oy=e.clientY-d.y;rdp.style.transform='translate('+ox+'px,'+oy+'px)';});
+  bar.addEventListener('pointerup',function(){d=null;bar.style.cursor='';});
+  new MutationObserver(function(){if(rd.hidden){ox=oy=0;}}).observe(rd,{attributes:true,attributeFilter:['hidden']});})();
+/* source refs like briefs/v4.md become tablet links */
+$$('.src').forEach(function(p){var w=document.createTreeWalker(p,NodeFilter.SHOW_TEXT),ns=[],n;while((n=w.nextNode()))if(!n.parentNode.closest('a'))ns.push(n);
+  ns.forEach(function(t){var re=/\b((?:docs|briefs|protocol|cuda|sim)\/[\w.\/-]+\.(?:md|py))/g;if(!re.test(t.nodeValue))return;var sp=document.createElement('span');
+    sp.innerHTML=esc(t.nodeValue).replace(re,'<a class="rdlink" href="'+REPO+'/blob/main/$1">$1</a>');t.parentNode.replaceChild(sp,t);});});
+function readHash(){var m=location.hash.match(/^#read=(.+)$/);if(m){var p=decodeURI(m[1]);if(p!==rdPath)openDoc(p,false);}else if(rdOpen)closeDoc();}
+addEventListener('hashchange',readHash);readHash();
 
 paint();
 })();
