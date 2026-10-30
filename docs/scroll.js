@@ -70,7 +70,7 @@ var SCRUB={
 function stId(){return J().ST[J().cur()].id;}
 function onMain(){return J().ST[J().cur()].y===0;}
 var g={acc:0,last:0,edge:false,travel:false,idle:null,v:0};
-function travel(dxPx){var c=J().cam(),x=c[0]+dxPx/innerWidth*1.1;x=Math.max(-.15,Math.min(6.15,x));J().setCam(x,0);g.travel=true;jmPaint();clearTimeout(g.idle);g.idle=setTimeout(settle,200);}
+function travel(dxPx,touch){var c=J().cam(),x=c[0]+(touch?dxPx/innerWidth:dxPx/1000);x=Math.max(-.15,Math.min(6.15,x));J().setCam(x,0);g.travel=true;jmPaint();clearTimeout(g.idle);g.idle=setTimeout(settle,200);}
 function nearest(x){var ST=J().ST,rv=J().revealed(),bi=0,bd=1e9;ST.forEach(function(s,i){if(s.y!==0)return;var d=Math.abs(s.x-x);if(d<bd){bd=d;bi=i;}});return bi;}
 function settle(){g.travel=false;if(!journeyOpen())return;var x=J().cam()[0],i=nearest(x);if(guided()){var same=i===J().cur();J().goSt(i,same);if(RM())J().setCam(J().ST[i].x,0);}else if(i!==J().cur()){/* free: no snap, but know where we are */J().goSt(i,true);J().setCam(x,0);}window.__lastStation={id:J().ST[i].id,at:Date.now()};}
 function sidePath(dir){/* dir -1 = up, +1 = down */var ST=J().ST,s=ST[J().cur()],rv=J().revealed();
@@ -95,7 +95,7 @@ var T=null;
 function tStart(e){if(e.touches.length!==1){T=null;return;}var t=e.touches[0];T={x:t.clientX,y:t.clientY,lx:t.clientX,ly:t.clientY,t:Date.now(),ax:null,el:e.target};}
 function tMove(e){if(!T)return;var t=e.touches[0],dx=t.clientX-T.x,dy=t.clientY-T.y;if(!T.ax&&Math.hypot(dx,dy)>10)T.ax=Math.abs(dx)>Math.abs(dy)?'x':'y';
  if(journeyOpen()&&T.ax&&!T.el.closest('canvas.jc,input,#jcomp,button')){var ndir=T.ax==='x'?(T.lx-t.clientX>0?1:-1):(T.ly-t.clientY>0?1:-1);
-  if(nativeScroll(T.el,T.ax,ndir,$('#north')))T.nat=true;else{if(e.cancelable)e.preventDefault();if(T.ax==='x')travel(T.lx-t.clientX);else{var id=stId();if(onMain()&&SCRUB[id])scrub(id,(T.ly-t.clientY)*1.6);}}}
+  if(nativeScroll(T.el,T.ax,ndir,$('#north')))T.nat=true;else{if(e.cancelable)e.preventDefault();if(T.ax==='x')travel(T.lx-t.clientX,true);else{var id=stId();if(onMain()&&SCRUB[id])scrub(id,(T.ly-t.clientY)*1.6);}}}
  T.lx=t.clientX;T.ly=t.clientY;}
 function tEnd(){if(!T)return;var dx=T.lx-T.x,dy=T.ly-T.y,dt=Date.now()-T.t,tt=T;T=null;if(!tt.ax)return;var fast=dt<450;
  if(journeyOpen()){if(tt.nat||tt.el.closest('canvas.jc,input,#jcomp,button'))return;if(tt.ax==='y'&&fast&&Math.abs(dy)>50){var id=stId();if(id==='kiln'&&onMain()){J().stoke(Math.min(220,Math.abs(dy)*1.2));hint('a fast flick stokes the kiln · '+Math.round(J().kiln())+' °C',900);window.__stoke={t:J().kiln()};return;}
