@@ -50,3 +50,41 @@ button:hover{border-color:var(--red)}
 .src{font-size:12px;color:var(--mut);margin:8px 0 0}
 details summary{cursor:pointer;color:var(--mut)}
 footer{color:var(--mut);font-size:14px;padding:30px 20px 60px}
+
+/* ---------- v0.2.0 · kiln depth (Depthfield-style planes) ---------- */
+:root{--obs:#0b0a0c;--zeal:#ff3b2f;--ember:#ff8a5c}
+html{scroll-behavior:smooth}
+body{background:var(--obs)}
+#kiln{position:fixed;inset:0;width:100%;height:100%;z-index:-2;display:block}
+.vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 40%,rgba(5,4,6,.75) 100%)}
+.hero{min-height:92vh;display:flex;align-items:center;background:none!important}
+.hero h1{font-size:clamp(2.4rem,7vw,5.2rem);line-height:1.02;letter-spacing:-.02em;text-shadow:0 0 40px rgba(255,59,47,.25)}
+.hero .red{color:var(--zeal);background:linear-gradient(90deg,var(--zeal),var(--ember));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.scrollcue{margin-top:3rem;font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;opacity:.5;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(6px);opacity:.8}}
+.card{background:rgba(18,15,17,.72)!important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,90,70,.14)!important}
+.kicker{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ember);margin:0 0 .3rem}
+.trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1rem 0}
+.trio article{padding:1rem;border-radius:12px;background:rgba(255,59,47,.05);border:1px solid rgba(255,59,47,.15)}
+.trio h3{margin:.1rem 0 .4rem;color:var(--ember)}
+.course{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-top:1rem}
+.course i{height:22px;border-radius:3px;background:linear-gradient(180deg,#a8382a,#5e1d16);box-shadow:inset 0 1px 0 rgba(255,180,150,.25);opacity:.3;transition:opacity .5s,transform .5s}
+.course.lit i{opacity:1}.course.lit i:nth-child(n+5){opacity:.55}
+.course:hover i{transform:translateY(-2px)}
+.specs article{position:relative;overflow:hidden}
+.specs article::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--zeal)}
+.plot{margin:1rem 0;padding:0}
+.plot canvas{width:100%;height:auto;border-radius:12px;background:#0f0c0e;border:1px solid rgba(255,59,47,.18);touch-action:pan-y}
+.plot figcaption{display:grid;gap:.4rem;margin-top:.6rem;font-size:.9rem}
+.plot input[type=range]{width:100%;accent-color:var(--zeal)}
+/* invisible overlay buttons with hover/tap cues */
+button,.ghost,.jump a{background:transparent!important;border:1px solid transparent!important;transition:border-color .25s,box-shadow .25s,color .25s}
+button:hover,button:focus-visible,.jump a:hover,.jump a:focus-visible,button:active{border-color:rgba(255,59,47,.6)!important;box-shadow:0 0 18px rgba(255,59,47,.25);color:#fff}
+.cta{background:linear-gradient(90deg,var(--zeal),#c4241b)!important;color:#fff!important;border:0!important;box-shadow:0 6px 24px rgba(255,59,47,.3)}
+.cta:hover{filter:brightness(1.12)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.scrollcue{animation:none}}
+@media (max-width:600px){.hero{min-height:84vh}.course i{height:16px}.trio{grid-template-columns:1fr}}
+.plot figcaption label{display:block}.plot figcaption label output,.plot figcaption label em{display:inline}
+.jump a.cta,a.cta{background:linear-gradient(90deg,var(--zeal),#c4241b)!important;color:#fff!important}
