@@ -44,7 +44,7 @@ function paint(){
   $$('i',hud).forEach(function(s,i){s.classList.toggle('on',!!st[Q[i].k]);});
   $$('i',mini).forEach(function(s,i){s.classList.toggle('on',!!st[Q[i].k]);});
   $('#tally').innerHTML=tallySVG(n);$('#tally').setAttribute('aria-label',n+' of 10 bricks laid');
-  $('#coursemsg').textContent=n===10?'Course complete. Ten bricks, one identity unit (if measurement earns it).':n+' / 10 bricks laid'+(nx>=0?' · next: '+Q[nx].n:'');
+  $('#coursemsg').textContent=n===10?'Course complete: all ten quest steps done. (Experiment 0 tests one face at a time, optically; a course identity would be magnetic bits across 4–8 bricks.)':n+' / 10 bricks laid'+(nx>=0?' · next: '+Q[nx].n:'');
   aimNeedle();heat=n/10;
 }
 $$('.quest button',ql).forEach(function(b,i){b.addEventListener('click',function(){
@@ -55,7 +55,7 @@ $$('.quest button',ql).forEach(function(b,i){b.addEventListener('click',function
   paint();
 });});
 $('#reset').addEventListener('click',function(){st={};save(KEY,st);paint();say('Course broken. Clay remembers anyway.');});
-var LAY=['% fired. It cooled past 675 °C… then 580 °C… needle locked. ▦','% laid. Mortar hums.','Ooh, % — that one glows.','% set. North is on our side.','% is in. I can feel the course thinking.'];
+var LAY=['% done. Laid into the course. ▦','% laid. Mortar hums.','Ooh, % — that one glows.','% set. One step closer.','% is in. I can feel the course thinking.'];
 
 /* ---------- sound (optional, off by default): plucked 31-EDO, after AND SO ---------- */
 var AC=null,sndOn=load('redcore.snd',false),sb=$('#snd');
@@ -165,10 +165,10 @@ function takeSigil(i,msg,el){if(found[i]){say(msg+' (already yours)');return;}fo
 
 /* ---------- Namer's Bench ---------- */
 var lot=$('#lot'),nn=$('#nn'),rep=$('#rep');
-function pad(v){v=Math.max(1,Math.min(20,parseInt(v,10)||1));return (v<10?'0':'')+v;}
+function pad(v){v=Math.max(1,Math.min(10,parseInt(v,10)||1));return (v<10?'0':'')+v;}
 function name(l,n,r){return l+'-'+pad(n)+'_r'+r+'.jpg';}
 function upd(){$('#fname').textContent=name(lot.value,nn.value,rep.value);var out=[];for(var i=1;i<=10;i++)out.push(name(lot.value,i,1)+'   '+name(lot.value,i,2));
-  $('#shotlist').textContent=out.join('\n')+'\n\n(20 faces total: A-01…A-10 and B-01…B-10, or one lot of 20.)';}
+  $('#shotlist').textContent=out.join('\n')+'\n\n(20 faces total: A-01…A-10 and B-01…B-10. Valid names only.)';}
 [lot,nn,rep].forEach(function(el){el.addEventListener('input',upd);});upd();
 $('#copy').addEventListener('click',function(){var t=$('#fname').textContent,h=$('#copyhint'),b=this;var r=b.getBoundingClientRect();sparks(r.left+r.width/2,r.top+r.height/2,10);
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){h.textContent='stamped · copied';say('Stamped: '+t);setTimeout(function(){h.textContent='tap to copy';},1400);},function(){h.textContent='select & copy: '+t;});});
@@ -402,7 +402,7 @@ function lockTry(){var r=comp.getBoundingClientRect(),c=$('#cv-cool').getBoundin
   if(cx<c.left||cx>c.right||cy<c.top||cy>c.bottom){comp.style.transform='';return false;}
   if(cT>=580){comp.classList.add('spin');setTimeout(function(){comp.classList.remove('spin');},1200);$('#cool-msg').textContent='Too hot: above 580 °C the magnetite holds no direction. Cool it more.';say('Spinning! Still too hot to remember anything.');return false;}
   locked=true;comp.classList.add('locked');$('#jneedle').style.transform='rotate('+(THETA*180/Math.PI+90)+'deg)';
-  $('#cool-msg').textContent='Locked. The needle points at the north that was (direction illustrative).';say('Locked! That arrow is the north that was. It stays in the brick.');
+  $('#cool-msg').textContent='Locked (lore illustration). The real record holds the field\'s direction and intensity; this needle shows only a direction.';say('Locked! That arrow is the north that was. It stays in the brick.');
   var b=comp.getBoundingClientRect();sparks(b.left+b.width/2,b.top+b.height/2,14);pluck(3);return true;}
 (function(){var d=null;comp.addEventListener('pointerdown',function(e){d={x:e.clientX,y:e.clientY};comp.setPointerCapture(e.pointerId);comp.classList.add('drag');});
   comp.addEventListener('pointermove',function(e){if(!d)return;comp.style.transform='translate('+(e.clientX-d.x)+'px,'+(e.clientY-d.y)+'px)';});

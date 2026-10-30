@@ -91,7 +91,7 @@
       <div class="jstage"><canvas class="jc" id="cv-cool" aria-label="Brick cooling; grains align below 675 and 580 degrees"></canvas>
         <div class="jcomp" id="jcomp" tabindex="0" role="button" aria-label="Compass: drag onto the brick (or press Enter)"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18"/><g id="jneedle"><path class="n" d="M20 5 L24 20 L16 20Z"/><path class="s" d="M20 35 L24 20 L16 20Z"/></g></svg></div></div>
       <div class="jtext"><p class="eyebrow"><i class="jg">↟</i> Station 3 · the Cooling</p><h3 class="jh">Let it cool. <span class="red">Then it remembers.</span></h3>
-      <p>As the brick cools, grains stop flipping: hematite below its Néel temperature ≈675&nbsp;°C, magnetite below its Curie temperature ≈580&nbsp;°C<sup><a href="#src-1" data-out>1</a>,<a href="#src-2" data-out>2</a></sup>. They freeze in a slight preference for Earth's field at that moment: <strong>the north that was</strong>.</p>
+      <p>As the brick cools, its remanence is acquired over a <strong>range of blocking temperatures</strong>, up to magnetite's Curie temperature ≈580&nbsp;°C and hematite's Néel temperature ≈675&nbsp;°C<sup><a href="#src-1" data-out>1</a>,<a href="#src-2" data-out>2</a></sup>. The thermoremanence records the <strong>full field vector</strong> at that time, direction and intensity: <strong>the north that was</strong>. <span class="tag">lore illustration</span> The compass lock at 580&nbsp;°C is a picture of the idea, not a single switch.</p>
       <label>Temperature <output id="cool-out">1050 °C</output><input type="range" id="cool-t" min="20" max="1050" step="1" value="1050"></label>
       <p class="marks"><span id="cool-h">◆ 675 °C hematite</span> <span id="cool-m">◆ 580 °C magnetite</span> <button type="button" class="ghost" id="cool-go">let it cool</button></p>
       <p class="muted" id="cool-msg">Drag the compass onto the brick.</p>
@@ -147,15 +147,15 @@
   <div class="inner">
     <p class="eyebrow">Redcore · Brickmark · <span class="ver">v0.6.0</span> · Room I · the Hearth</p>
     <h1>The brick remembers<br><span class="red">where north was.</span></h1>
-    <p class="lede">As fired clay cools, its magnetite locks a record of Earth's field (magnetite Curie temperature ≈580&nbsp;°C; hematite Néel temperature ≈675&nbsp;°C<sup><a href="#src-1">1</a>,<a href="#src-2">2</a></sup>). Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another.</p>
-    <p class="lede"><strong>Your quest: lay a course of ten bricks with a phone and twenty clay faces, then deliver it to the assay.</strong> Tinder, the kiln sprite, will walk you there.</p>
+    <p class="lede">As fired clay cools through a range of blocking temperatures (up to the magnetite Curie temperature ≈580&nbsp;°C and the hematite Néel temperature ≈675&nbsp;°C<sup><a href="#src-1">1</a>,<a href="#src-2">2</a></sup>), it acquires a thermoremanent record of Earth's field: direction and intensity. Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another.</p>
+    <p class="lede"><strong>Your quest: ten steps (drawn as bricks in a course) with a phone and twenty clay faces, then deliver the photos to the assay.</strong> Tinder, the kiln sprite, will walk you there.</p>
     <a class="start" href="#course" id="start"><span>Light the kiln</span></a> <a class="start northgo" href="#north"><span>↟ Walk The North That Was</span></a> <a class="start bookgo" href="#book"><span>❦ Open The Brickmaker's Book</span></a> <a class="start apgo" href="#autoplay" id="apgo"><span>▶ Autoplay: see everything</span></a>
     <div class="trio">
       <article class="relic"><i class="sig">⊕</i><h3>A provenance assay</h3><p>Magnetic provenance for fired clay. <strong>Batch provenance first</strong>; spatial, unit or course identity only if repeatability survives measurement.</p></article>
       <article class="relic"><i class="sig">⊘</i><h3>Not a PUF</h3><p>No PUF-as-crypto, no bed-face archive in a laid wall, no security language until repeatability is proven. The struck v1 claims stay dead.</p></article>
-      <article class="relic"><i class="sig">▦</i><h3>The course is the unit</h3><p>The identity unit may be the <strong>course of bricks</strong>: aggregate four to eight bricks for a usable identity length, if measured course BER earns it.</p></article>
+      <article class="relic"><i class="sig">▦</i><h3>The course may be the unit</h3><p>For the <strong>magnetic</strong> assay, the identity unit may be a <strong>course</strong>: magnetic bits aggregated across four to eight bricks for a usable identity length, if measured course BER earns it. Experiment 0 is different: a one-face optical test.</p></article>
     </div>
-    <p class="warn"><b>Before quoting numbers:</b> the v4 figures (<strong>87 independent cells</strong>, <strong>63 extractable bits</strong> per face) are <span class="tag model">MODEL ONLY</span> simulation outputs, not measured. No bits-per-brick claim until the spectrum gate (issue #3) runs.</p>
+    <p class="warn"><b>Before quoting numbers:</b> the v4 brief estimates <strong>~90 independent cells</strong> and <strong>~60 extractable bits</strong> per face; the executed model run (<code>cuda/results/ASSAY_v4_run.md</code>) gives <strong>87 cells</strong> and <strong>63 bits</strong>. Both are <span class="tag model">MODEL ONLY</span> simulation outputs, not measured. No bits-per-brick claim until the spectrum gate (issue #3) runs.</p>
     <p class="src">docs/SAELION_REALITY_PROGRAM.md §1, §2.2, WP4 · briefs/v3.md · briefs/v4.md</p>
   </div>
 </section>
@@ -163,9 +163,9 @@
 <!-- ROOM II · COURSE (quests) -->
 <section class="room course" id="course">
   <div class="inner">
-    <p class="eyebrow">Room II · the Course · Experiment 0 · $0 · a phone</p>
-    <h2>Lay the course. <span class="red">Ten bricks, ten sigils.</span></h2>
-    <p class="muted">Each quest is a brick. Tap a brick to fire it: it cools past 675&nbsp;°C, then 580&nbsp;°C, its needle locks north, and it is laid into your course. Tap a laid brick again to lift it. Progress stays in this browser. Optical unit identity, complementary to the magnetic Afternoon Zero. Source: <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_optical.md">experiment0_optical.md</a>, <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_ingest.md">experiment0_ingest.md</a>.</p>
+    <p class="eyebrow">Room II · the Course · Experiment 0 · $0 if you already have clay bricks · a phone</p>
+    <h2>Lay the course. <span class="red">Ten steps, ten sigils.</span></h2>
+    <p class="muted">Each quest step is drawn as a brick (a game picture). Tap a brick to mark the step done and lay it into your course; tap a laid brick again to lift it. Progress stays in this browser. Experiment 0 is a <strong>one-face optical test</strong>: phone photos of each face, matched genuine vs impostor. It is not the magnetic assay; "course as identity unit" means magnetic bits across 4–8 bricks, a separate model hypothesis. Complementary to the magnetic Afternoon Zero. Source: <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_optical.md">experiment0_optical.md</a>, <a href="https://github.com/stevoblevo/redcore/blob/main/protocol/experiment0_ingest.md">experiment0_ingest.md</a>.</p>
     <div class="wall" id="wall" aria-hidden="true"></div>
     <ol class="quests" id="quests"></ol>
     <div class="row"><span class="muted" id="coursemsg"></span><button class="ghost" id="reset">Break the course (reset)</button></div>
@@ -180,7 +180,7 @@
     <div class="stamp">
       <div class="dials">
         <label>Lot<select id="lot"><option>A</option><option>B</option></select></label>
-        <label>Face # (1–20)<input id="nn" type="number" min="1" max="20" value="1"></label>
+        <label>Face # (01–10)<input id="nn" type="number" min="1" max="10" value="1"></label>
         <label>Capture<select id="rep"><option value="1">r1</option><option value="2">r2</option></select></label>
       </div>
       <button class="tablet" id="copy" aria-label="Copy file name"><code id="fname">A-01_r1.jpg</code><small id="copyhint">tap to copy</small></button>
@@ -196,8 +196,8 @@
     <h2>Three separate stones. <span class="red">Never merge them.</span></h2>
     <div class="specs">
       <article class="pillar"><i class="sig">⋮</i><h3>1 · Scan pitch</h3><p>Spectrum gate (issue #3): scan a defined patch at <strong>0.25–0.5 mm pitch</strong>.</p><p class="src">issue #3 · docs/SAELION_REALITY_PROGRAM.md</p></article>
-      <article class="pillar"><i class="sig">⇕</i><h3>2 · Standoff (height) tolerance</h3><p>Derived jig spec: standoff repeatability <strong>≤ 0.2 mm</strong> (alongside lateral ≤ 0.25 mm, σ<sub>B</sub>/n ≥ 10).</p><p class="src">briefs/v4.md · briefs/v3.md</p></article>
-      <article class="pillar model"><i class="sig">∿</i><h3>3 · v4 error budget <span class="tag model">MODEL ONLY</span></h3><p>0.25 mm lateral, 0.1 mm standoff, σ<sub>B</sub>/n = 10, BER ~5% (executed run: BER 6.12%, 63 bits; 87 cells at 3 mm cell pitch, 1 mm standoff).</p><p class="src">briefs/v4.md · cuda/results/ASSAY_v4_run.md</p></article>
+      <article class="pillar"><i class="sig">⇕</i><h3>2 · Standoff (height) tolerance</h3><p>Derived jig spec: standoff repeatability <strong>≤ 0.2 mm</strong> (alongside lateral ≤ 0.25 mm, σ<sub>B</sub>/n ≥ 10).</p><p>Note: the 63-bit headline (pillar 3) assumes <strong>0.1 mm</strong> standoff, tighter than this spec. Building to spec does not reach the headline.</p><p class="src">briefs/v4.md · briefs/v3.md</p></article>
+      <article class="pillar model"><i class="sig">∿</i><h3>3 · v4 error budget <span class="tag model">MODEL ONLY</span></h3><p>The headline assumes 0.25 mm lateral, <strong>0.1 mm standoff</strong>, σ<sub>B</sub>/n = 10, BER ~5% (executed run: BER 6.12%, 63 bits; 87 cells at 3 mm cell pitch, 1 mm standoff). At the looser jig spec the executed run gives less: 0.50 mm lateral / <strong>0.20 mm standoff</strong> / σ<sub>B</sub>/n 10 → BER 9.29%, <strong>49 bits</strong>. All model, not measured.</p><p class="src">briefs/v4.md · cuda/results/ASSAY_v4_run.md</p></article>
     </div>
   </div>
 </section>

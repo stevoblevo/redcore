@@ -15,7 +15,7 @@ var RC=function(){return window.__rc||{say:function(){},takeSigil:function(){}};
 function ld(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 var FACT_ROOMS=['hearth','course','bench','pillars','gate','assay','sources'];
-var TRUE=['Gate #3 is unmeasured. I don\'t joke about the gate.','Filenames: {lot}-{nn}_r{rep}.jpg. Even I won\'t mess with that.','Three pillars, three numbers. Never merge them. That\'s not a bit.','The v4 figures are MODEL ONLY. Deadpan, but true.','Submit as a GitHub data-submission issue. Straight answer.','Not a PUF. No security claims. I checked.','Magnetite ≈580 °C, hematite ≈675 °C. Look it up in the Plate Library.'];
+var TRUE=['Gate #3 is unmeasured. I don\'t joke about the gate.','Filenames: {lot}-{nn}_r{rep}.jpg. Even I won\'t mess with that.','Three pillars, three numbers. Never merge them. That\'s not a bit.','The v4 numbers (brief ~90/~60, executed run 87/63) are MODEL ONLY. Deadpan, but true.','Submit as a GitHub data-submission issue. Straight answer.','Not a PUF. No security claims. I checked.','Magnetite ≈580 °C, hematite ≈675 °C. Look it up in the Plate Library.'];
 var LOG=[];var cur=null,demo=false,forced=null,where={room:'hearth',book:null,station:null};
 var trust=ld('redcore.trust',{tinder:50,clinker:50});
 function inDemo(){return demo||(window.__book&&window.__book.rt&&window.__book.rt.state().on)||(window.__ap&&window.__ap.state().on);}

@@ -1,6 +1,6 @@
 # Redcore · Brickmark
 
-> Brickmark is a magnetic provenance assay for fired clay (batch provenance first; unit or course identity only if repeatability survives measurement). It is not a PUF and makes no security claims. The identity unit may be the course of four to eight bricks. Experiment 0 collects phone photos of twenty clay faces, named `{lot}-{nn}_r{rep}.jpg` and submitted as a GitHub issue. The v4 figures are MODEL ONLY; spectrum gate #3 is UNMEASURED.
+> Brickmark is a magnetic provenance assay for fired clay (batch provenance first; unit or course identity only if repeatability survives measurement). It is not a PUF and makes no security claims. For the magnetic assay the identity unit may be a course (magnetic bits aggregated across four to eight bricks; a model hypothesis). Experiment 0 is separate: a one-face optical test that collects phone photos of twenty clay faces, named `{lot}-{nn}_r{rep}.jpg` and submitted as a GitHub issue. The v4 figures are MODEL ONLY; spectrum gate #3 is UNMEASURED.
 
 The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("bricks"), six rooms, Tinder, a guide sprite, an explorable journey "The North That Was" (#north), a choose-your-path storybook "The Brickmaker's Book" (#book, with Read to me), a rival pet Clinker whose bluffs touch only game lore (never facts), and an Autoplay tour (#autoplay). Everything an agent needs is in one fetch at [llms-full.txt](https://stevoblevo.github.io/redcore/llms-full.txt).
 
@@ -23,8 +23,8 @@ The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("b
 - [Contributing](https://raw.githubusercontent.com/stevoblevo/redcore/main/CONTRIBUTING.md)
 
 ## Specs (three separate values, quoted from the repo; never merge them)
-- [Site: the Three Pillars](https://stevoblevo.github.io/redcore/#pillars): 1) scan pitch 0.25–0.5 mm (issue #3); 2) standoff repeatability ≤ 0.2 mm (derived jig spec); 3) v4 error budget, MODEL ONLY
-- [Brief v4](https://raw.githubusercontent.com/stevoblevo/redcore/main/briefs/v4.md): MODEL ONLY simulation outputs (87 cells, 63 bits per face), not measured
+- [Site: the Three Pillars](https://stevoblevo.github.io/redcore/#pillars): 1) scan pitch 0.25–0.5 mm (issue #3); 2) standoff repeatability ≤ 0.2 mm (derived jig spec); 3) v4 error budget, MODEL ONLY: the 63-bit headline assumes 0.1 mm standoff; at the 0.20 mm spec the executed run gives 49 bits @ 9.29% BER
+- [Brief v4](https://raw.githubusercontent.com/stevoblevo/redcore/main/briefs/v4.md): MODEL ONLY estimates (~90 independent cells, ~60 extractable bits per face); the executed run [cuda/results/ASSAY_v4_run.md](https://raw.githubusercontent.com/stevoblevo/redcore/main/cuda/results/ASSAY_v4_run.md) gives 87 cells / 63 bits, also a model, not measured
 - [Brief v3](https://raw.githubusercontent.com/stevoblevo/redcore/main/briefs/v3.md)
 
 ## Spectrum gate #3 (UNMEASURED)

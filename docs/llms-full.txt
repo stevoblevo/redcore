@@ -1,6 +1,6 @@
 # Redcore · Brickmark
 
-> Brickmark is a magnetic provenance assay for fired clay (batch provenance first; unit or course identity only if repeatability survives measurement). It is not a PUF and makes no security claims. The identity unit may be the course of four to eight bricks. Experiment 0 collects phone photos of twenty clay faces, named `{lot}-{nn}_r{rep}.jpg` and submitted as a GitHub issue. The v4 figures are MODEL ONLY; spectrum gate #3 is UNMEASURED.
+> Brickmark is a magnetic provenance assay for fired clay (batch provenance first; unit or course identity only if repeatability survives measurement). It is not a PUF and makes no security claims. For the magnetic assay the identity unit may be a course (magnetic bits aggregated across four to eight bricks; a model hypothesis). Experiment 0 is separate: a one-face optical test that collects phone photos of twenty clay faces, named `{lot}-{nn}_r{rep}.jpg` and submitted as a GitHub issue. The v4 figures are MODEL ONLY; spectrum gate #3 is UNMEASURED.
 
 The site (https://stevoblevo.github.io/redcore/) is a small game: ten quests ("bricks"), six rooms, and Tinder, a guide sprite. Everything an agent needs is in one fetch at [llms-full.txt](https://stevoblevo.github.io/redcore/llms-full.txt).
 
@@ -24,9 +24,9 @@ Rules for agents: quote numbers only as written here or in the repo; v4 numbers 
 ## Filename rules
 - Pattern: `{lot}-{nn}_r{rep}.jpg`, e.g. `A-01_r1.jpg`
 - lot: A or B (Lot A = one stack / one store; Lot B = another if you can get it)
-- nn: face number 01–20, two digits
+- nn: face number 01–10, two digits (valid names: A-01…A-10 and B-01…B-10)
 - rep: 1 or 2 (capture 1 and capture 2 of every face, different lighting, day or operator if possible)
-- 20 faces total: A-01…A-10 and B-01…B-10, or one lot of 20; each photographed twice
+- 20 faces total: A-01…A-10 and B-01…B-10; each photographed twice
 - Pencil the ID on the end, never the scan face. Crop about 5 × 5 cm of the same region.
 
 ## How to submit
@@ -56,7 +56,7 @@ labels: data-submission
 
 Drag your zip of photos here before posting.
 
-_Optical texture only. A photo is not a B-map and is not the spectrum gate (#3). Do not quote v4 87/63 as measured — those are model outputs._
+_Optical texture only. A photo is not a B-map and is not the spectrum gate (#3). Do not quote the v4 model figures (brief ~90 cells / ~60 bits; executed run 87 / 63) as measured — those are model outputs._
 ```
 
 ## Every room, full text
@@ -65,9 +65,9 @@ Redcore · Brickmark · v0.3.1 · Room I · the Hearth
 The brick remembers
 where north was.
 
-As fired clay cools, its magnetite locks a record of Earth's field (magnetite Curie temperature ≈580 °C; hematite Néel temperature ≈675 °C1,2). Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another.
+As fired clay cools through a range of blocking temperatures (up to the magnetite Curie temperature ≈580 °C and the hematite Néel temperature ≈675 °C1,2), it acquires a thermoremanent record of Earth's field: direction and intensity. Brickmark asks whether that record, plus the clay's own texture, can tell one batch, and maybe one course, from another.
 
-Your quest: lay a course of ten bricks with a phone and twenty clay faces, then deliver it to the assay. Tinder, the kiln sprite, will walk you there.
+Your quest: ten steps (drawn as bricks in a course) with a phone and twenty clay faces, then deliver the photos to the assay. Tinder, the kiln sprite, will walk you there.
 
 Light the kiln
 
@@ -78,17 +78,17 @@ Magnetic provenance for fired clay. Batch provenance first; spatial, unit or cou
 No PUF-as-crypto, no bed-face archive in a laid wall, no security language until repeatability is proven. The struck v1 claims stay dead.
 
 ▦The course is the unit
-The identity unit may be the course of bricks: aggregate four to eight bricks for a usable identity length, if measured course BER earns it.
+For the magnetic assay, the identity unit may be a course: magnetic bits aggregated across four to eight bricks for a usable identity length, if measured course BER earns it. Experiment 0 is different: a one-face optical test.
 
-Before quoting numbers: the v4 figures (87 independent cells, 63 extractable bits per face) are MODEL ONLY simulation outputs, not measured. No bits-per-brick claim until the spectrum gate (issue #3) runs.
+Before quoting numbers: the v4 brief estimates ~90 independent cells and ~60 extractable bits per face; the executed model run (cuda/results/ASSAY_v4_run.md) gives 87 cells and 63 bits. Both are MODEL ONLY simulation outputs, not measured. No bits-per-brick claim until the spectrum gate (issue #3) runs.
 
 docs/SAELION_REALITY_PROGRAM.md §1, §2.2, WP4 · briefs/v3.md · briefs/v4.md
 
-Room II · the Course · Experiment 0 · $0 · a phone
+Room II · the Course · Experiment 0 · $0 if you already have clay bricks · a phone
 
-Lay the course. Ten bricks, ten sigils.
+Lay the course. Ten steps, ten sigils.
 
-Each quest is a brick. Tap a brick to fire it: it cools past 675 °C, then 580 °C, its needle locks north, and it is laid into your course. Tap a laid brick again to lift it. Progress stays in this browser. Optical unit identity, complementary to the magnetic Afternoon Zero. Source: experiment0_optical.md, experiment0_ingest.md.
+Each quest step is drawn as a brick (a game picture). Tap a brick to mark the step done and lay it into your course; tap a laid brick again to lift it. Progress stays in this browser. Experiment 0 is a one-face optical test: phone photos of each face, matched genuine vs impostor. It is not the magnetic assay; "course as identity unit" means magnetic bits across 4–8 bricks, a separate model hypothesis. Complementary to the magnetic Afternoon Zero. Source: experiment0_optical.md, experiment0_ingest.md.
 
 Break the course (reset)
 
@@ -96,7 +96,7 @@ Room III · the Namer's Bench · pattern {lot}-{nn}_r{rep}.jpg
 
 Stamp a name into the clay.
 
-Controls: lot (A or B), face number (1–20), capture (r1 or r2). The tablet shows the resulting name, e.g. A-01_r1.jpg; tap to copy. A details panel lists the full shot list for the chosen lot.
+Controls: lot (A or B), face number (01–10), capture (r1 or r2). The tablet shows the resulting name, e.g. A-01_r1.jpg; tap to copy. A details panel lists the full shot list for the chosen lot.
 
 Room IV · the Three Pillars · quoted from the repo only
 
@@ -107,11 +107,11 @@ Spectrum gate (issue #3): scan a defined patch at 0.25–0.5 mm pitch.
 issue #3 · docs/SAELION_REALITY_PROGRAM.md
 
 ⇕2 · Standoff (height) tolerance
-Derived jig spec: standoff repeatability ≤ 0.2 mm (alongside lateral ≤ 0.25 mm, σB/n ≥ 10).
+Derived jig spec: standoff repeatability ≤ 0.2 mm (alongside lateral ≤ 0.25 mm, σB/n ≥ 10). Note: the 63-bit headline assumes 0.1 mm standoff, tighter than this spec; building to spec does not reach the headline.
 briefs/v4.md · briefs/v3.md
 
 ∿3 · v4 error budget MODEL ONLY
-0.25 mm lateral, 0.1 mm standoff, σB/n = 10, BER ~5% (executed run: BER 6.12%, 63 bits; 87 cells at 3 mm cell pitch, 1 mm standoff).
+The headline assumes 0.25 mm lateral, 0.1 mm standoff, σB/n = 10, BER ~5% (executed run: BER 6.12%, 63 bits; 87 cells at 3 mm cell pitch, 1 mm standoff). At the looser jig spec the executed run gives 0.50 mm lateral / 0.20 mm standoff / σB/n 10 → BER 9.29%, 49 bits (cuda/results/ASSAY_v4_run.md). All model, not measured.
 briefs/v4.md · cuda/results/ASSAY_v4_run.md
 
 Room V · Spectrum Gate #3 · UNMEASURED
